@@ -3,6 +3,13 @@
 }
 @for(int i = 0; i < 10; i++)
 {
-    <p>@i</p>
+    if (i % 2 == 0)
+    {
+        <b>@i<br></b>
+    }
+    else
+    {
+        <body>@i<br></body>
+    }
 }
 <p>Acesta e un test.</p>
