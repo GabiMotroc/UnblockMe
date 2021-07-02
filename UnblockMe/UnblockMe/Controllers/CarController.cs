@@ -12,8 +12,5 @@ namespace UnblockMe.Controllers
         {
             return View();
         }
-
-
-
     }
 }
