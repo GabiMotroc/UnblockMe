@@ -1,0 +1,10 @@
+﻿@model List<UnblockMeContext> 
+
+@{
+    ViewData["Title"] = "View Licence Plate";
+}
+
+@foreach(var test in Model)
+{ 
+    <body>@test.User.<br></body>
+}
