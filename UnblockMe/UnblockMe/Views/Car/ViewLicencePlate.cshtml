@@ -1,10 +1,97 @@
-﻿@model List<UnblockMeContext> 
+﻿@model List<Car>
 
 @{
     ViewData["Title"] = "View Licence Plate";
 }
 
-@foreach(var test in Model)
-{ 
-    <body>@test.User.<br></body>
-}
+<head>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th.buttons {
+            width: 0%;
+        }
+        td.buttons {
+            color: blue; 
+            font-size: 85%; 
+            vertical-align: bottom;
+        }
+        th.blocked, th.blocks, th.licence, td.blocked, td.blocks, td.licence {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+    </style>
+</head>
+<body>
+
+    <script>
+        function Function(c) { console.log(c);}
+    </script>
+
+    <table>
+
+        <tr>
+            <th class="licence">Licence Plate</th>
+            <th class="blocked">Is blocked by</th>
+            <th class="blocks">Is blocking</th>
+            <th class="buttons"></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="licence">@item.LicencePlate</td>
+                <td class="blocked">@item.Blocks</td>
+                <td class="blocks">@item.BockedBy</td>
+                <td class="buttons"> <div id="Edit" onclick="Function('@item.LicencePlate')">Edit</div> <div id="Remove" onclick="Function('@item.LicencePlate')">Remove</div></td>
+            </tr>
+        }
+    </table>
+</body>
+
+@*
+    <p></p>
+    <head>
+        <style>
+            .column {
+                float: left;
+                width: 33.33%;
+                padding: 10px;
+            }
+        </style>
+        <div class="row">
+            <div class="column" style="background-color:#aaa;">
+                <h2>Licence Plate</h2>
+                @foreach (var test in Model)
+                {
+                    <div>
+                        @test.LicencePlate<br>
+                    </div>
+                }
+            </div>
+            <div class="column" style="background-color:#bbb;">
+                <h2>Is blocked By</h2>
+                @foreach (var test in Model)
+                {
+                    <div>
+                        @test.BockedBy<br>
+                    </div>
+                }
+            </div>
+            <div class="column" style="background-color:#ccc;">
+                <h2>Is blocking</h2>
+                @foreach (var test in Model)
+                {
+                    <div>
+                        @test.Blocks<br>
+                    </div>
+                }
+            </div>
+        </div>
+    </head>
+*@

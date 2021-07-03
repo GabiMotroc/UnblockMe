@@ -760,7 +760,6 @@ F:\Projects\Git\UnblockMe\UnblockMe\obj\Debug\netcoreapp3.1\UnblockMe.TagHelpers
 F:\Projects\Git\UnblockMe\UnblockMe\obj\Debug\netcoreapp3.1\UnblockMe.TagHelpers.output.cache
 F:\Projects\Git\UnblockMe\UnblockMe\obj\Debug\netcoreapp3.1\UnblockMe.RazorCoreGenerate.cache
 F:\Projects\Git\UnblockMe\UnblockMe\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\_ViewStart.cshtml.g.cs
-F:\Projects\Git\UnblockMe\UnblockMe\obj\Debug\netcoreapp3.1\Razor\Views\Home\AddLicencePlate.cshtml.g.cs
 F:\Projects\Git\UnblockMe\UnblockMe\obj\Debug\netcoreapp3.1\Razor\Views\Home\Index.cshtml.g.cs
 F:\Projects\Git\UnblockMe\UnblockMe\obj\Debug\netcoreapp3.1\Razor\Views\Home\Privacy.cshtml.g.cs
 F:\Projects\Git\UnblockMe\UnblockMe\obj\Debug\netcoreapp3.1\Razor\Views\Shared\Error.cshtml.g.cs
@@ -1166,3 +1165,5 @@ C:\Users\motro\Desktop\New folder\UnblockMe\UnblockMe\obj\Debug\netcoreapp3.1\Un
 C:\Users\motro\Desktop\New folder\UnblockMe\UnblockMe\obj\Debug\netcoreapp3.1\UnblockMe.genruntimeconfig.cache
 C:\Users\motro\Desktop\New folder\UnblockMe\UnblockMe\obj\Debug\netcoreapp3.1\Razor\Views\Car\AddLicencePlate.cshtml.g.cs
 C:\Users\motro\Desktop\New folder\UnblockMe\UnblockMe\obj\Debug\netcoreapp3.1\Razor\Views\Car\ViewLicencePlate.cshtml.g.cs
+F:\Projects\Git\UnblockMe\UnblockMe\obj\Debug\netcoreapp3.1\Razor\Views\Car\AddLicencePlate.cshtml.g.cs
+F:\Projects\Git\UnblockMe\UnblockMe\obj\Debug\netcoreapp3.1\Razor\Views\Car\ViewLicencePlate.cshtml.g.cs
