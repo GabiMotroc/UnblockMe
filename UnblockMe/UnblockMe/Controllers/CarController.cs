@@ -11,6 +11,7 @@ namespace UnblockMe.Controllers
 {
     public class CarController : Controller
     {
+        private const string ViewName = "~/Views/Home/Index.cshtml";
         private readonly ILogger<CarController> _logger;
         private readonly UnblockMeContext _context;
 
@@ -31,18 +32,16 @@ namespace UnblockMe.Controllers
         //    return View();
         //}
 
-#pragma warning disable MVC1004 // Rename model bound parameter.
-        public IActionResult AddCar(Car model)
-#pragma warning restore MVC1004 // Rename model bound parameter.
+        public IActionResult AddCar(Car item)
         {
             try 
             {
-                if (!model.Equals(null))
+                if (!item.Equals(null))
                 {
-                    this._context.Car.Add(model);
+                    this._context.Car.Add(item);
                     this._context.SaveChanges();
 
-                    return View(model);
+                    return View(ViewName);
                 }
             }
             catch (Exception e)
