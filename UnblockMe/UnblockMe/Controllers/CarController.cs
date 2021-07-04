@@ -19,17 +19,49 @@ namespace UnblockMe.Controllers
             _logger = logger;
             _context = unlockMeContext;
         }
-
+        
         public IActionResult ViewLicencePlate()
         {
             var cars = _context.Car.Select(a => a).ToList();
             return View(cars);
         }
 
-        public IActionResult AddLicencePlate()
+        //public IActionResult AddCar()
+        //{
+        //    return View();
+        //}
+
+#pragma warning disable MVC1004 // Rename model bound parameter.
+        public IActionResult AddCar(Car model)
+#pragma warning restore MVC1004 // Rename model bound parameter.
         {
-            return View();
+            try 
+            {
+                if (!model.Equals(null))
+                {
+                    this._context.Car.Add(model);
+                    this._context.SaveChanges();
+
+                    return View(model);
+                }
+            }
+            catch (Exception e)
+            {
+                 //nu e chiar nevoie
+            }
+            return View();  
         }
+        
+
+        //public ActionResult AddLicencePlate()
+        //{
+        //    //if (ModelState.IsValid)
+        //    //{
+        //    //    Car.Add(model);
+        //    //    db.SaveChanges();
+        //    //}
+        //    return View();
+        //}
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
