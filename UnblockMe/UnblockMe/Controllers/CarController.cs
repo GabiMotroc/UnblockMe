@@ -20,12 +20,18 @@ namespace UnblockMe.Controllers
             _logger = logger;
             _context = unlockMeContext;
         }
-        
+
         public IActionResult ViewLicencePlate()
         {
             var cars = _context.Car.Select(a => a).ToList();
             return View(cars);
         }
+
+        //public IActionResult ViewLicencePlate(string value)
+        //{
+        //    var cars = _context.Car.Select(a => a.LicencePlate == value);
+        //    return View(cars);
+        //}
 
         //public IActionResult AddCar()
         //{
@@ -34,7 +40,7 @@ namespace UnblockMe.Controllers
 
         public IActionResult AddCar(Car item)
         {
-            try 
+            try
             {
                 if (!item.Equals(null))
                 {
@@ -46,11 +52,48 @@ namespace UnblockMe.Controllers
             }
             catch (Exception e)
             {
-                 //nu e chiar nevoie
+                //nu e chiar nevoie
             }
-            return View();  
+            return View();
         }
         
+        [HttpPost]
+        public IActionResult RemoveCar(string value)
+        {
+            try 
+            { 
+            var car = _context.Car.Find(value);
+            this._context.Car.Remove(car);
+            this._context.SaveChanges();
+            }
+            
+            catch
+            {
+
+            }
+            //return View("ViewLicencePlate.cshtml");
+            this.ViewLicencePlate();
+            return null;
+        }
+
+        [HttpPost]
+        public IActionResult SearchCar(Car car)
+        {
+
+            var text = car.LicencePlate;
+            if(text != null)
+            {
+                var Model = _context.Car.Where(a => a.LicencePlate.Contains(text)).ToList();
+                try
+                {
+                    if (Model.Equals(null))
+                        return View(ViewName);
+                }
+                catch { }
+                return View("ViewLicencePlate", Model);
+            }
+            return View(ViewName);
+        }
 
         //public ActionResult AddLicencePlate()
         //{

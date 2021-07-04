@@ -2,10 +2,13 @@
     ViewData["Title"] = "Home Page";
 }
 
+@model Car
+
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
-    <form action="/action_page.php">
-        <input type="text" id="searchCar" name="searchCar"><br><br>
+    @Html.BeginForm("searchCar", "Car", FormMethod.Post)
+    {
+        @Html.TextBoxFor(x => Model.LicencePlate)
         <input type="submit" value="Search">
-    </form>
+    }
 </div>
