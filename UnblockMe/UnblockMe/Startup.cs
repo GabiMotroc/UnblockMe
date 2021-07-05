@@ -11,7 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using UnblockMe.Data;
+//using UnblockMe.Data;
 using UnblockMe.Models;
 
 namespace UnblockMe
@@ -32,11 +32,8 @@ namespace UnblockMe
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)
+                .AddEntityFrameworkStores<UnblockMeContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
 

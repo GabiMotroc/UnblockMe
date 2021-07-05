@@ -6,7 +6,7 @@
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
-    @Html.BeginForm("searchCar", "Car", FormMethod.Post)
+    @using (Html.BeginForm("searchCar", "Car", FormMethod.Post))
     {
         @Html.TextBoxFor(x => Model.LicencePlate)
         <input type="submit" value="Search">

@@ -42,7 +42,7 @@ namespace UnblockMe.Models
                     this._blocks = value.Replace(" ", "").ToLower();
             }
         }
-        public int OwnerId { get; set; }
+        public string OwnerId { get; set; }
 
         public virtual User Owner { get; set; }
     }
