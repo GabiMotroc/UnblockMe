@@ -6,12 +6,15 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using UnblockMe.Models;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace UnblockMe.Controllers
 {
     public class CarController : Controller
     {
-        private const string ViewName = "~/Views/Home/Index.cshtml";
+        private const string HomeView = "~/Views/Home/Search.cshtml";
+        private const string ViewPlateView = "~/Views/Car/ViewLicencePlate.cshtml";
         private readonly ILogger<CarController> _logger;
         private readonly UnblockMeContext _context;
 
@@ -23,7 +26,10 @@ namespace UnblockMe.Controllers
 
         public IActionResult ViewLicencePlate()
         {
-            var cars = _context.Car.Select(a => a).ToList();
+            var cars = _context.Car
+                .Select(a => a)
+                .Where(b => b.OwnerId == this.User.FindFirstValue(ClaimTypes.NameIdentifier))
+                .ToList();
             return View(cars);
         }
 
@@ -38,16 +44,19 @@ namespace UnblockMe.Controllers
         //    return View();
         //}
 
+        [Authorize]
         public IActionResult AddCar(Car item)
         {
             try
             {
                 if (!item.Equals(null))
                 {
+                    
+                    item.OwnerId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);/*User.Identity.GetUserId();*/
                     this._context.Car.Add(item);
                     this._context.SaveChanges();
 
-                    return View(ViewName);
+                    return View(HomeView);
                 }
             }
             catch (Exception e)
@@ -57,23 +66,22 @@ namespace UnblockMe.Controllers
             return View();
         }
         
-        [HttpPost]
-        public IActionResult RemoveCar(string value)
+        //[HttpPost]
+        public IActionResult RemoveCar(string text)
         {
+            //var text = cars.LicencePlate;
             try 
             { 
-            var car = _context.Car.Find(value);
+            var car = _context.Car.Find(text);
             this._context.Car.Remove(car);
             this._context.SaveChanges();
             }
-            
             catch
             {
 
             }
-            //return View("ViewLicencePlate.cshtml");
-            this.ViewLicencePlate();
-            return null;
+            return View(ViewPlateView);
+            //return this.ViewLicencePlate();
         }
 
         [HttpPost]
@@ -87,12 +95,12 @@ namespace UnblockMe.Controllers
                 try
                 {
                     if (Model.Equals(null))
-                        return View(ViewName);
+                        return View(HomeView);
                 }
                 catch { }
                 return View("ViewLicencePlate", Model);
             }
-            return View(ViewName);
+            return View(HomeView);
         }
 
         //public ActionResult AddLicencePlate()

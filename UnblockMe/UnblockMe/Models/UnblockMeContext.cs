@@ -66,13 +66,14 @@ namespace UnblockMe.Models
                     .HasColumnName("model")
                     .HasMaxLength(20);
 
-                entity.Property(e => e.OwnerId).HasColumnName("ownerId");
+                entity.Property(e => e.OwnerId)
+                    .HasColumnName("ownerId");
 
                 entity.HasOne(d => d.Owner)
                     .WithMany(p => p.Car)
                     .HasForeignKey(d => d.OwnerId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_carToOwner");
+                    .HasConstraintName("FK_car_owner");
             });
 
             modelBuilder.Entity<User>(entity =>
