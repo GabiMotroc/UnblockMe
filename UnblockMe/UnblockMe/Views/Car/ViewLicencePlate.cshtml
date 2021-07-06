@@ -15,10 +15,12 @@
             width: 0%;
         }
 
-        td.buttons {
+        .ind-buttons {
             color: blue;
             font-size: 85%;
             vertical-align: bottom;
+            
+            text-align: left;
         }
 
         th.blocked, th.blocks, th.licence, td.blocked, td.blocks, td.licence {
@@ -51,22 +53,24 @@
                     <td class="blocked">@item.Blocks</td>
                     <td class="blocks">@item.BockedBy</td>
                     <td class="buttons">
-                        <div id="Edit" onclick="Function('@item.LicencePlate')">Edit</div>
+                        <div id="Edit" class="ind-buttons" onclick="Function('@item.LicencePlate')">Edit</div>
+
                         @*<div id="Remove" onclick="Function('@item.LicencePlate')">Remove</div>*@
-                        @Html.ActionLink(
-                            "Remove",                                                 // linkText
-                            "RemoveCar",                                                   // actionName
-                            "Car",                                                      // controllerName
-                            new
-                                 {                                                     // routeValues
-                                text = item.LicencePlate
-                            },
-                            null                                                      // htmlAttributes
-                            )
-                        @*@using (Html.BeginForm("RemoveCar", "Car", FormMethod.Post))
-                            {
-                               <input type="submit" class="btn btn-link" value="@item.LicencePlate">
-                            }*@
+                        @*@Html.ActionLink(
+        "Remove",                                                 // linkText
+        "RemoveCar",                                                   // actionName
+        "Car",                                                      // controllerName
+        new
+             {                                                     // routeValues
+            text = item.LicencePlate
+        },
+        null                                                      // htmlAttributes
+        )*@
+                        @using (Html.BeginForm("RemoveCar", "Car", FormMethod.Post))
+                        {
+                            <input type="hidden" name="text" value="@item.LicencePlate">
+                            <input type="submit" class="ind-buttons btn btn-link" value="Remove">
+                        }
                     </td>
                 </tr>
 

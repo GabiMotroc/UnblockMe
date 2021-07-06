@@ -33,17 +33,6 @@ namespace UnblockMe.Controllers
             return View(cars);
         }
 
-        //public IActionResult ViewLicencePlate(string value)
-        //{
-        //    var cars = _context.Car.Select(a => a.LicencePlate == value);
-        //    return View(cars);
-        //}
-
-        //public IActionResult AddCar()
-        //{
-        //    return View();
-        //}
-
         [Authorize]
         public IActionResult AddCar(Car item)
         {
@@ -66,10 +55,10 @@ namespace UnblockMe.Controllers
             return View();
         }
         
-        //[HttpPost]
+        [HttpPost]
         public IActionResult RemoveCar(string text)
         {
-            //var text = cars.LicencePlate;
+            //var text = model.LicencePlate;
             try 
             { 
             var car = _context.Car.Find(text);
@@ -80,15 +69,15 @@ namespace UnblockMe.Controllers
             {
 
             }
-            return View(ViewPlateView);
+            return View(HomeView);
+            //this.ViewLicencePlate();
             //return this.ViewLicencePlate();
         }
 
         [HttpPost]
-        public IActionResult SearchCar(Car car)
+        public IActionResult SearchCar(string text)
         {
-
-            var text = car.LicencePlate;
+            //var text = car.LicencePlate;
             if(text != null)
             {
                 var Model = _context.Car.Where(a => a.LicencePlate.Contains(text)).ToList();
@@ -102,16 +91,6 @@ namespace UnblockMe.Controllers
             }
             return View(HomeView);
         }
-
-        //public ActionResult AddLicencePlate()
-        //{
-        //    //if (ModelState.IsValid)
-        //    //{
-        //    //    Car.Add(model);
-        //    //    db.SaveChanges();
-        //    //}
-        //    return View();
-        //}
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

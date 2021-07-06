@@ -12,7 +12,36 @@ namespace AspNetCore
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.AspNetCore.Mvc.ViewFeatures;
+#nullable restore
+#line 1 "F:\Projects\Git\UnblockMe\UnblockMe\Areas\Identity\Pages\_ViewImports.cshtml"
+using Microsoft.AspNetCore.Identity;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 2 "F:\Projects\Git\UnblockMe\UnblockMe\Areas\Identity\Pages\_ViewImports.cshtml"
+using UnblockMe.Areas.Identity;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 3 "F:\Projects\Git\UnblockMe\UnblockMe\Areas\Identity\Pages\_ViewImports.cshtml"
+using UnblockMe.Areas.Identity.Pages;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 5 "F:\Projects\Git\UnblockMe\UnblockMe\Areas\Identity\Pages\_ViewImports.cshtml"
+using UnblockMe.Models;
+
+#line default
+#line hidden
+#nullable disable
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"3f28dc362181dbee1faf03b0d8037b15e0f9db35", @"/Areas/Identity/Pages/_ViewStart.cshtml")]
+    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"53fdb1d5fae24eb5cf1028d3017d3a7bf1faf8c2", @"/Areas/Identity/Pages/_ViewImports.cshtml")]
     public class Areas_Identity_Pages__ViewStart : global::Microsoft.AspNetCore.Mvc.Razor.RazorPage<dynamic>
     {
         #pragma warning disable 1998
