@@ -1,0 +1,10 @@
+﻿@{
+    ViewData["Title"] = "View Contact";
+}
+
+@model ValueTuple<Car, User>
+
+<p>
+    @Model.Item1.LicencePlate
+    @Model.Item2.Email
+</p>

@@ -52,11 +52,6 @@ namespace UnblockMe.Controllers
                     return View(HomeView);
                 }
             }
-            //catch (SqlException e)
-            //    when (e.Number == 2627)
-            //    {
-            //    _notyfService.Warning("The licence plate already exists.");
-            //    }
             catch (Exception e)
                         when ((bool)(e.InnerException?.ToString().Contains("PRIMARY KEY")))
             {
@@ -94,7 +89,9 @@ namespace UnblockMe.Controllers
             var text = car.LicencePlate;
             if (text != null)
             {
-                var Model = _context.Car.Where(a => a.LicencePlate.Contains(text)).ToList();
+                var Model = _context.Car
+                    .Where(a => a.LicencePlate.Contains(text))
+                    .ToList();
                 try
                 {
                     if (Model.Equals(null))
@@ -106,6 +103,18 @@ namespace UnblockMe.Controllers
                 return View("ViewLicencePlate", Model);
             }
             return View(HomeView);
+        }
+
+        
+        public IActionResult ViewContact([FromQuery]string text)
+        {
+            var car = _context.Car
+                .FirstOrDefault(a => a.LicencePlate.Equals(text));
+            var user = _context.Users
+                .FirstOrDefault(a => a.Id.Equals(car.OwnerId));
+            var tuple = (car, user);
+            return View(tuple);
+
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

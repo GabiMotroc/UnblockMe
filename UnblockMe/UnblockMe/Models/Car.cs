@@ -18,7 +18,7 @@ namespace UnblockMe.Models
             get => _licencePlate;
             set
             {
-                this._licencePlate = value.Replace(" ", "").ToLower(); 
+                this._licencePlate = value.Replace(" ", "").ToUpper(); 
             }  
         }
         public string Maker { get; set; }
@@ -30,7 +30,7 @@ namespace UnblockMe.Models
             set
             {
                 if(value != null)
-                    this._blockedBy = value.Replace(" ", "").ToLower();
+                    this._blockedBy = value.Replace(" ", "").ToUpper();
             }
         }
         public string Blocks 
@@ -39,7 +39,7 @@ namespace UnblockMe.Models
             set
             {
                 if (value != null)  
-                    this._blocks = value.Replace(" ", "").ToLower();
+                    this._blocks = value.Replace(" ", "").ToUpper();
             }
         }
         public string OwnerId { get; set; }

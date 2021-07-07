@@ -2,3 +2,9 @@
     ViewData["Title"] = "Car Contact";
 }
 
+@model Car
+
+<p>
+    @Model.LicencePlate
+    @Model.Owner.Email
+</p>
