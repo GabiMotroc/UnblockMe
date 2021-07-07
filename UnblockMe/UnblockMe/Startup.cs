@@ -1,3 +1,4 @@
+using AspNetCoreHero.ToastNotification;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -37,6 +38,12 @@ namespace UnblockMe
             services.AddControllersWithViews();
             services.AddRazorPages();
 
+            services.AddNotyf(config => 
+            {
+                config.DurationInSeconds = 10;
+                config.IsDismissable = true;
+                config.Position = NotyfPosition.BottomRight;
+            });
             
 
             services.Configure<IdentityOptions>(options =>

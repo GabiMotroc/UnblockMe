@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using UnblockMe.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.Data.SqlClient;
 
 namespace UnblockMe.Controllers
 {
@@ -17,11 +19,13 @@ namespace UnblockMe.Controllers
         private const string ViewPlateView = "~/Views/Car/ViewLicencePlate.cshtml";
         private readonly ILogger<CarController> _logger;
         private readonly UnblockMeContext _context;
+        private readonly INotyfService _notyfService;
 
-        public CarController(UnblockMeContext unlockMeContext, ILogger<CarController> logger)
+        public CarController(UnblockMeContext unlockMeContext, ILogger<CarController> logger, INotyfService notyfService)
         {
             _logger = logger;
             _context = unlockMeContext;
+            _notyfService = notyfService;
         }
 
         public IActionResult ViewLicencePlate()
@@ -40,30 +44,40 @@ namespace UnblockMe.Controllers
             {
                 if (!item.Equals(null))
                 {
-                    
+
                     item.OwnerId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);/*User.Identity.GetUserId();*/
                     this._context.Car.Add(item);
                     this._context.SaveChanges();
-
+                    _notyfService.Success("Car succesufuly added.");
                     return View(HomeView);
                 }
             }
+            //catch (SqlException e)
+            //    when (e.Number == 2627)
+            //    {
+            //    _notyfService.Warning("The licence plate already exists.");
+            //    }
             catch (Exception e)
+                        when ((bool)(e.InnerException?.ToString().Contains("PRIMARY KEY")))
             {
-                //nu e chiar nevoie
+                _notyfService.Warning("The licence plate already exists.");
+            }
+            catch (Exception)
+            {
+
             }
             return View();
         }
-        
+
         [HttpPost]
         public IActionResult RemoveCar(string text)
         {
             //var text = model.LicencePlate;
-            try 
-            { 
-            var car = _context.Car.Find(text);
-            this._context.Car.Remove(car);
-            this._context.SaveChanges();
+            try
+            {
+                var car = _context.Car.Find(text);
+                this._context.Car.Remove(car);
+                this._context.SaveChanges();
             }
             catch
             {
@@ -75,16 +89,18 @@ namespace UnblockMe.Controllers
         }
 
         [HttpPost]
-        public IActionResult SearchCar(string text)
+        public IActionResult SearchCar(Car car)
         {
-            //var text = car.LicencePlate;
-            if(text != null)
+            var text = car.LicencePlate;
+            if (text != null)
             {
                 var Model = _context.Car.Where(a => a.LicencePlate.Contains(text)).ToList();
                 try
                 {
                     if (Model.Equals(null))
+                    {
                         return View(HomeView);
+                    }
                 }
                 catch { }
                 return View("ViewLicencePlate", Model);

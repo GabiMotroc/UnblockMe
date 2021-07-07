@@ -16,7 +16,7 @@
         @using (Html.BeginForm("searchCar", "Car", FormMethod.Post))
         {
             @Html.TextBoxFor(x => Model.LicencePlate)
-            <input type="submit" value="Search">
+            <input type="submit" name="text" value="Search">
         }
     }
     else

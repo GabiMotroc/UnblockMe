@@ -1217,3 +1217,6 @@ F:\Projects\Git\UnblockMe\UnblockMe\obj\Debug\netcoreapp3.1\Razor\Areas\Identity
 F:\Projects\Git\UnblockMe\UnblockMe\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\_ValidationScriptsPartial.cshtml.g.cs
 F:\Projects\Git\UnblockMe\UnblockMe\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\_ViewImports.cshtml.g.cs
 F:\Projects\Git\UnblockMe\UnblockMe\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Manage\Index.cshtml.g.cs
+F:\Projects\Git\UnblockMe\UnblockMe\obj\Debug\netcoreapp3.1\Razor\Views\Car\CarContact.cshtml.g.cs
+F:\Projects\Git\UnblockMe\UnblockMe\bin\Debug\netcoreapp3.1\AspNetCoreHero.ToastNotification.Views.dll
+F:\Projects\Git\UnblockMe\UnblockMe\bin\Debug\netcoreapp3.1\AspNetCoreHero.ToastNotification.dll
