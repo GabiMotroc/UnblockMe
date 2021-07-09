@@ -104,17 +104,52 @@ namespace UnblockMe.Controllers
             }
             return View(HomeView);
         }
+        [HttpGet]
+        public IActionResult EditCar(string text)
+        {
+            try
+            {
+                var car = _context.Car
+                   .FirstOrDefault(a => a.LicencePlate.Equals(text));
+                return PartialView("EditCarPartial", car);
+            }
+            catch { }
+            return PartialView("EditCarPartial", null);
+        }
 
-        
+        [HttpPost]
+        public IActionResult EditCar(Car input)
+        {
+            if (input.OwnerId == this.User.FindFirstValue(ClaimTypes.NameIdentifier))
+            {
+                try
+                {
+                    //var car = _context.Car
+                    //   .FirstOrDefault(a => a.LicencePlate == input.LicencePlate);
+                    _context.Car.Update(input);
+                    _context.SaveChanges();
+                }
+                catch { }
+            }
+            else
+            {
+                Console.WriteLine("Chiar nu stiu cum reusisi");
+            }
+            return View(HomeView);
+        }
         public IActionResult ViewContact([FromQuery]string text)
         {
-            var car = _context.Car
-                .FirstOrDefault(a => a.LicencePlate.Equals(text));
-            var user = _context.Users
-                .FirstOrDefault(a => a.Id.Equals(car.OwnerId));
-            var tuple = (car, user);
-            return View(tuple);
-
+            try
+            {
+                var car = _context.Car
+                    .FirstOrDefault(a => a.LicencePlate.Equals(text));
+                var user = _context.Users
+                    .FirstOrDefault(a => a.Id.Equals(car.OwnerId));
+                var tuple = (car, user);
+                return View(tuple);
+            }
+            catch { }
+            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

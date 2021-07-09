@@ -18,7 +18,7 @@ namespace UnblockMe.Models
             get => _licencePlate;
             set
             {
-                this._licencePlate = value.Replace(" ", "").ToUpper(); 
+                this._licencePlate = value?.Replace(" ", "").ToUpper(); 
             }  
         }
         public string Maker { get; set; }

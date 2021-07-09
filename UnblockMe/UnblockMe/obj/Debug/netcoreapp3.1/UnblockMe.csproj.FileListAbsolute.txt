@@ -1215,7 +1215,6 @@ F:\Projects\Git\UnblockMe\UnblockMe\obj\Debug\netcoreapp3.1\Razor\Areas\Identity
 F:\Projects\Git\UnblockMe\UnblockMe\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\_ValidationScriptsPartial.cshtml.g.cs
 F:\Projects\Git\UnblockMe\UnblockMe\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\_ViewImports.cshtml.g.cs
 F:\Projects\Git\UnblockMe\UnblockMe\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Manage\Index.cshtml.g.cs
-F:\Projects\Git\UnblockMe\UnblockMe\obj\Debug\netcoreapp3.1\Razor\Views\Car\CarContact.cshtml.g.cs
 F:\Projects\Git\UnblockMe\UnblockMe\bin\Debug\netcoreapp3.1\AspNetCoreHero.ToastNotification.Views.dll
 F:\Projects\Git\UnblockMe\UnblockMe\bin\Debug\netcoreapp3.1\AspNetCoreHero.ToastNotification.dll
 C:\Users\motro\Desktop\New folder\UnblockMe\UnblockMe\bin\Debug\netcoreapp3.1\AspNetCoreHero.ToastNotification.Views.dll
@@ -1274,3 +1273,5 @@ C:\Users\motro\Desktop\New folder\UnblockMe\UnblockMe\obj\Debug\netcoreapp3.1\Ra
 C:\Users\motro\Desktop\New folder\UnblockMe\UnblockMe\obj\Debug\netcoreapp3.1\Razor\Views\Car\CarContact.cshtml.g.cs
 C:\Users\motro\Desktop\New folder\UnblockMe\UnblockMe\obj\Debug\netcoreapp3.1\Razor\Views\Home\Search.cshtml.g.cs
 C:\Users\motro\Desktop\New folder\UnblockMe\UnblockMe\obj\Debug\netcoreapp3.1\Razor\Views\Car\ViewContact.cshtml.g.cs
+F:\Projects\Git\UnblockMe\UnblockMe\obj\Debug\netcoreapp3.1\Razor\Views\Car\ViewContact.cshtml.g.cs
+F:\Projects\Git\UnblockMe\UnblockMe\obj\Debug\netcoreapp3.1\Razor\Views\Car\EditCarPartial.cshtml.g.cs

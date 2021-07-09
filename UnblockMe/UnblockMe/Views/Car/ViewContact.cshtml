@@ -1,10 +1,18 @@
-﻿@{
-    ViewData["Title"] = "View Contact";
-}
+﻿@model ValueTuple<Car, User>
 
-@model ValueTuple<Car, User>
 
-<p>
-    @Model.Item1.LicencePlate
-    @Model.Item2.Email
-</p>
+<div class="modal fade" id="">
+
+
+    @if (Model.Equals(null))
+    {
+        <p>None found.</p>
+    }
+    else
+    {
+        <p>
+            @Model.Item1.LicencePlate
+            @Model.Item2.Email
+        </p>
+    }
+</div>

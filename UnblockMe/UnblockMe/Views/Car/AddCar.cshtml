@@ -32,10 +32,6 @@
             <label style=" float:left; margin-right:20px;">Licence Plate<span class="asterisk">*</span>:</label>
             @Html.TextBoxFor(x => x.LicencePlate, new { @class = "box", @placeholder = "Licence Plate..."@*, @required = "required"*@ })
 
-            @*<label style=" float:left; margin-right:20px;">Owner Id<span class="asterisk">*</span>:</label>
-        @Html.TextBoxFor(x => x.OwnerId, new { @class = "box", @placeholder = "Owner Id..." })*@
-            @*@Model.OwnerId = User.Identity.Name!;*@
-
             <label style=" float:left; margin-right:20px;">Maker: </label>
             @Html.TextAreaFor(x => x.Maker, new { @class = "box", @placeholder = "Maker..." })
 

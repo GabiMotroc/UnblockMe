@@ -37,23 +37,23 @@ namespace UnblockMe.Areas.Identity.Pages.Account.Manage
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
 
-            //[DataType(DataType.Text)]
-            //[Display(Name = "First Name")]
-            //public string FirstName { get; set; }
+            [DataType(DataType.Text)]
+            [Display(Name = "First Name")]
+            public string FirstName { get; set; }
         }
 
         private async Task LoadAsync(User user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-            //var firstName = await _userManager.GetFirstNameAsync(user);
+            var firstName = user.FirstName;
 
             Username = userName;
 
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber/*,
-                FirstName = firstName*/
+                PhoneNumber = phoneNumber,
+                FirstName = firstName
             };
         }
 
@@ -84,6 +84,7 @@ namespace UnblockMe.Areas.Identity.Pages.Account.Manage
             }
 
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+            var firstName = user.FirstName;
             if (Input.PhoneNumber != phoneNumber)
             {
                 var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
@@ -93,7 +94,11 @@ namespace UnblockMe.Areas.Identity.Pages.Account.Manage
                     return RedirectToPage();
                 }
             }
-
+            if(firstName != Input.FirstName)
+            {
+                user.FirstName = Input.FirstName;
+                var setFirstName = await _userManager.UpdateAsync(user);
+            }
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
             return RedirectToPage();
