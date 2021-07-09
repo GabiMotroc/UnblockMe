@@ -133,6 +133,7 @@ namespace UnblockMe.Controllers
             }
             return View(HomeView);
         }
+
         public IActionResult ViewContact([FromQuery] string text)
         {
             try
