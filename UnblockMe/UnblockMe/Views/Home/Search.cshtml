@@ -15,9 +15,11 @@
     {
         @using (Html.BeginForm("searchCar", "Car", FormMethod.Post))
         {
+            //var item = Model.FirstOrDefault(null);
             @Html.TextBoxFor(x => Model.LicencePlate)
             <input type="submit" name="text" value="Search">
         }
+      
     }
     else
     {

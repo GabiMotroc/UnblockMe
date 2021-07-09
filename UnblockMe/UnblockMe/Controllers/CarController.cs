@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.Data.SqlClient;
+using UnblockMe.Services;
 
 namespace UnblockMe.Controllers
 {
@@ -17,24 +18,24 @@ namespace UnblockMe.Controllers
     {
         private const string HomeView = "~/Views/Home/Search.cshtml";
         private const string ViewPlateView = "~/Views/Car/ViewLicencePlate.cshtml";
+
+        private readonly ICarService _carService;
+        private readonly IUserService _userService;
         private readonly ILogger<CarController> _logger;
-        private readonly UnblockMeContext _context;
         private readonly INotyfService _notyfService;
 
-        public CarController(UnblockMeContext unlockMeContext, ILogger<CarController> logger, INotyfService notyfService)
+        public CarController(ICarService carService, IUserService userService, ILogger<CarController> logger, INotyfService notyfService)
         {
+            _carService = carService;
+            _userService = userService;
             _logger = logger;
-            _context = unlockMeContext;
             _notyfService = notyfService;
         }
 
         public IActionResult ViewLicencePlate()
         {
-            var cars = _context.Car
-                .Select(a => a)
-                .Where(b => b.OwnerId == this.User.FindFirstValue(ClaimTypes.NameIdentifier))
-                .ToList();
-            return View(cars);
+            return View(_carService
+                .GetCarsOfAnOwner(User.FindFirstValue(ClaimTypes.NameIdentifier)));
         }
 
         [Authorize]
@@ -45,9 +46,7 @@ namespace UnblockMe.Controllers
                 if (!item.Equals(null))
                 {
 
-                    item.OwnerId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);/*User.Identity.GetUserId();*/
-                    this._context.Car.Add(item);
-                    this._context.SaveChanges();
+                    _carService.AddCarAndOwner(item, User.FindFirstValue(ClaimTypes.NameIdentifier));
                     _notyfService.Success("Car succesufuly added.");
                     return View(HomeView);
                 }
@@ -67,20 +66,23 @@ namespace UnblockMe.Controllers
         [HttpPost]
         public IActionResult RemoveCar(string text)
         {
-            //var text = model.LicencePlate;
             try
             {
-                var car = _context.Car.Find(text);
-                this._context.Car.Remove(car);
-                this._context.SaveChanges();
+                var car = _carService.GetCarByPlate(text);
+                if (car.OwnerId == User.FindFirstValue(ClaimTypes.NameIdentifier))
+                {
+                   _carService.RemoveCar(car);
+                }
+                else 
+                {
+                    Console.WriteLine("you are not the owner of ths car");
+                }
             }
             catch
             {
 
             }
             return View(HomeView);
-            //this.ViewLicencePlate();
-            //return this.ViewLicencePlate();
         }
 
         [HttpPost]
@@ -89,9 +91,7 @@ namespace UnblockMe.Controllers
             var text = car.LicencePlate;
             if (text != null)
             {
-                var Model = _context.Car
-                    .Where(a => a.LicencePlate.Contains(text))
-                    .ToList();
+                var Model = _carService.GetCarByPartialPlate(text);
                 try
                 {
                     if (Model.Equals(null))
@@ -109,8 +109,7 @@ namespace UnblockMe.Controllers
         {
             try
             {
-                var car = _context.Car
-                   .FirstOrDefault(a => a.LicencePlate.Equals(text));
+                var car = _carService.GetCarByPlate(text);
                 return PartialView("EditCarPartial", car);
             }
             catch { }
@@ -120,14 +119,11 @@ namespace UnblockMe.Controllers
         [HttpPost]
         public IActionResult EditCar(Car input)
         {
-            if (input.OwnerId == this.User.FindFirstValue(ClaimTypes.NameIdentifier))
+            if (input.OwnerId == User.FindFirstValue(ClaimTypes.NameIdentifier))
             {
                 try
                 {
-                    //var car = _context.Car
-                    //   .FirstOrDefault(a => a.LicencePlate == input.LicencePlate);
-                    _context.Car.Update(input);
-                    _context.SaveChanges();
+                    _carService.UpdateCar(input);
                 }
                 catch { }
             }
@@ -137,14 +133,12 @@ namespace UnblockMe.Controllers
             }
             return View(HomeView);
         }
-        public IActionResult ViewContact([FromQuery]string text)
+        public IActionResult ViewContact([FromQuery] string text)
         {
             try
             {
-                var car = _context.Car
-                    .FirstOrDefault(a => a.LicencePlate.Equals(text));
-                var user = _context.Users
-                    .FirstOrDefault(a => a.Id.Equals(car.OwnerId));
+                var car = _carService.GetCarByPlate(text);
+                var user = _userService.GetOwnerOfACar(car);
                 var tuple = (car, user);
                 return View(tuple);
             }

@@ -12,8 +12,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using UnblockMe.Controllers;
 //using UnblockMe.Data;
 using UnblockMe.Models;
+using UnblockMe.Services;
 
 namespace UnblockMe
 {
@@ -35,6 +37,10 @@ namespace UnblockMe
 
             services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<UnblockMeContext>();
+
+            services.AddTransient<ICarService, CarService>();
+            services.AddTransient<IUserService, UserService>();
+
             services.AddControllersWithViews();
             services.AddRazorPages();
 
@@ -50,6 +56,9 @@ namespace UnblockMe
             {
                 options.Password.RequireNonAlphanumeric = false;
             });
+
+            
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
