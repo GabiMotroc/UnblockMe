@@ -60,7 +60,11 @@
             {
                 <tr>
                     <td class="licence">
-                        @Html.ActionLink(
+                        <button type="button" class="btn btn-link" data-toggle="ajax-modal" data-target="#Car"
+                                data-url="@Url.Action("ViewContact", "Car", new { text=item.LicencePlate })" data-id="@item.LicencePlate">
+                            @item.LicencePlate
+                        </button>
+                        @*@Html.ActionLink(
          item.LicencePlate,                                                 // linkText
          "ViewContact",                                                   // actionName
          "Car",                                                      // controllerName
@@ -73,11 +77,15 @@
             @style = "color: black"
 
         }                                                // htmlAttributes
-         )
+         )*@
                     </td>
 
                     <td class="blocked">
-                        @Html.ActionLink(
+                        <button type="button" class="btn btn-link" data-toggle="ajax-modal" data-target="#Car"
+                                data-url="@Url.Action("ViewContact", "Car", new { text=item.BockedBy })" data-id="@item.LicencePlate">
+                            @item.BockedBy
+                        </button>
+                        @*@Html.ActionLink(
              item.BockedBy ?? "",                                                 // linkText
              "ViewContact",                                                   // actionName
              "Car",                                                      // controllerName
@@ -90,23 +98,27 @@
                  @style = "color: black"
 
              }                                                                      // htmlAttributes
-             )
+             )*@
                     </td>
                     <td class="blocks">
-                        @Html.ActionLink(
-             item.Blocks ?? "",                                                 // linkText
-             "ViewContact",                                                   // actionName
-             "Car",                                                      // controllerName
-             new
-             {                                                     // routeValues
-                 text = item.Blocks ?? ""
-             },
-             new
-             {
-                 @style = "color: black"
+                        <button type="button" class="btn btn-link" data-toggle="ajax-modal" data-target="#Car"
+                                data-url="@Url.Action("ViewContact", "Car", new { text=item.Blocks })" data-id="@item.LicencePlate">
+                            @item.Blocks
+                        </button>
+                        @*@Html.ActionLink(
+        item.Blocks ?? "",                                                 // linkText
+        "ViewContact",                                                   // actionName
+        "Car",                                                      // controllerName
+        new
+        {                                                     // routeValues
+            text = item.Blocks ?? ""
+        },
+        new
+        {
+            @style = "color: black"
 
-             }                                                                          // htmlAttributes
-             )
+        }                                                                          // htmlAttributes
+        )*@
                     </td>
                     <td class="buttons">
                         @*<div id="Edit" class="ind-buttons" onclick="Function('@item.LicencePlate')">Edit</div>*@

@@ -146,10 +146,10 @@ namespace UnblockMe.Controllers
                 var user = _context.Users
                     .FirstOrDefault(a => a.Id.Equals(car.OwnerId));
                 var tuple = (car, user);
-                return View(tuple);
+                return View("ViewContactPartial", tuple);
             }
             catch { }
-            return View();
+            return View("ViewContactPartial");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
