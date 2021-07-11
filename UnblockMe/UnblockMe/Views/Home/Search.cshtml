@@ -45,7 +45,7 @@
             <input type="text" id="fname" name="text">
             <input type="submit" value="Search" />
         </form>
-        
+
         @try
         {
             @if (!(Model == null))
@@ -102,10 +102,24 @@
             }
         }
         catch { }
-
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#BlockCar"
+                data-url="@Url.Action("BlockCarPartial", "Car")" data-id="test" style="background-color: red; color: black">
+            Block car
+        </button>
     }
     else
     {
         <p style="padding-top: 20px">You need to be signed in to be able to use the website. Sorry for any inconvenience.</p>
     }
+
+    <div class="modal fade" tabindex="-1" id="BlockCar" style="width:50%; align-content:center ">
+
+        <div class="moda-dialog">
+            <div class="modal-content">
+                @{ 
+                    Html.RenderPartial("_BlockCarPartial");
+                }
+            </div>
+        </div>
+    </div>
 </div>

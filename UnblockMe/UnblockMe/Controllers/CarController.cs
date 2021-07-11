@@ -169,9 +169,15 @@ namespace UnblockMe.Controllers
             return PartialView("ViewContactPartial", (car, user));
         }
 
-        public IActionResult BlockCar()
+        public IActionResult BlockCarPartial()
         {
-            return PartialView("BlockCarPartial");
+            var plates = new List<string>();
+            var cars = _carService.GetCarsOfAnOwner(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            foreach(var item in cars)
+            {
+                plates.Add(item.LicencePlate);
+            }
+            return PartialView(plates);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

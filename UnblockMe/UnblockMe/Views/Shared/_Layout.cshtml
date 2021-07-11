@@ -27,9 +27,10 @@
 
                         @if (SignInManager.IsSignedIn(User))
                         {
+                            <div id="PlaceHolderHere"></div>
                             <li>
-                                <button type="button" class="btn btn-primary" data-toggle="ajax-modal" data-target="#BlockCar"
-                                        data-url="@Url.Action("BlockCar", "Car" ,null)" data-id="test" style="background-color: red; color: black">
+                                <button type="button" class="btn btn-primary" data-toggle="ajax-modal" data-target="#BlockCarPartial"
+                                        data-url="@Url.Action("BlockCarPartial", "Car")" data-id="test" style="background-color: red; color: black">
                                     Block car
                                 </button>
                             </li>
@@ -42,7 +43,7 @@
                             <li class="nav-item">
                                 <a class="nav-link" asp-area="" asp-controller="Car" asp-action="ViewLicencePlate">View Plates</a>
                             </li>
-                           
+
                         }
                     </ul>
                 </div>

@@ -28,8 +28,7 @@ $(function () {
 })
 
 $('#myModal').on('shown.bs.modal', function () {
-    $('#myInput').trigger('focus');
-    alert('works');
+    $('#myInput').trigger('focus')
 })
 
 function copyToClipboard(text) {
