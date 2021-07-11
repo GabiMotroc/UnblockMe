@@ -7,13 +7,17 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>@ViewData["Title"] - UnblockMe</title>
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+
+    <link href="~/lib/dark-mode/css/dark-mode.css" rel="stylesheet" />
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm box-shadow mb-3">
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Search">UnblockMe</a>
 
@@ -23,29 +27,22 @@
 
                         @if (SignInManager.IsSignedIn(User))
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Search">Search</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Car" asp-action="AddCar">Add car</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Car" asp-action="ViewLicencePlate">View Plates</a>
-                            </li>
                             <li>
                                 <button type="button" class="btn btn-primary" data-toggle="ajax-modal" data-target="#BlockCar"
-                                        data-url="@Url.Action("BlockCar", "Car" ,null)" data-id="test">
+                                        data-url="@Url.Action("BlockCar", "Car" ,null)" data-id="test" style="background-color: red; color: black">
                                     Block car
-                                </button>
-                                <button onclick="location.href='@Url.Action("BlockCar", "Car")';return false;">
-                                    Cancel
                                 </button>
                             </li>
                             <li class="nav-item">
-                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                                        Launch demo modal
-                                    </button>
-                                </li>
+                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Search">Search</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Car" asp-action="AddCar">Add car</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Car" asp-action="ViewLicencePlate">View Plates</a>
+                            </li>
+                           
                         }
                     </ul>
                 </div>
@@ -64,41 +61,41 @@
             &copy; 2021 - UnblockMe - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script src="~/lib/dark-mode/js/dark-mode-switch.min.js"></script>
+
     @await Component.InvokeAsync("Notyf")
     @RenderSection("Scripts", required: false)
 
-<div class="modal" id="BlockCar" style="width:50%; align-content:center ">
+    @*<div class="modal" id="BlockCar" style="width:50%; align-content:center ">
 
-    <div class="moda-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="test">Test label</h4>
-                <button type="button" class="close" data-dismiss="modal">
-                    <span>X</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-4">
-                        <p>...</p>
+            <div class="moda-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="test">Test label</h4>
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span>X</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <p>...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" data-save="modal">Save</button>
+
                     </div>
                 </div>
             </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" data-save="modal">Save</button>
-
-            </div>
-        </div>
-    </div>
-</div>
+        </div>*@
 </body>
-
-
-
-
 </html>

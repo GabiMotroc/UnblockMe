@@ -12,6 +12,7 @@
 {
     <body style="align-content: center">
         <style>
+
             .box {
                 width: 100%;
                 float: left;
@@ -24,6 +25,43 @@
             span.asterisk {
                 color: red;
             }
+
+            html, body {
+                height: 100%;
+            }
+
+            .wrap {
+                padding-top: 20px;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .button {
+                width: 140px;
+                height: 45px;
+                font-family: 'Roboto', sans-serif;
+                font-size: 11px;
+                text-transform: uppercase;
+                letter-spacing: 2.5px;
+                font-weight: 500;
+                color: #000;
+                background-color: #fff;
+                border: none;
+                border-radius: 45px;
+                box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+                transition: all 0.3s ease 0s;
+                cursor: pointer;
+                outline: none;
+            }
+
+                .button:hover {
+                    background-color: #2EE59D;
+                    box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
+                    color: #fff;
+                    transform: translateY(-7px);
+                }
         </style>
 
         <h3>Introduce the details of the car that you want to add.</h3>
@@ -47,7 +85,10 @@
             <label style=" float:left; margin-right:20px;">Blocked by: </label>
             @Html.TextAreaFor(x => x.BockedBy, new { @class = "box", @placeholder = "The licence plate of the car that blocks you..." })
 
-            <input type="submit" value="Submit" style="width: 60%; background: limegreen; margin-top: 20px" />
+
+            <div class="warp" style="text-align: center; padding-top: 20px">
+                <input type="submit" class="button" value="Submit" />
+            </div>
 
             <p style="margin-top: 20px">Every item with <span class="asterisk">*</span> is not optional.</p>
         </div>

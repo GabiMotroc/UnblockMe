@@ -34,7 +34,6 @@
         padding: 10px;
         text-align: left;
         border-bottom: 1px solid #ddd;
-        color: black;
     }
 </style>
 
@@ -46,15 +45,7 @@
             <input type="text" id="fname" name="text">
             <input type="submit" value="Search" />
         </form>
-
-        <button type="button" class="btn btn-primary" data-toggle="ajax-modal" data-target="#BlockCar"
-                data-url="@Url.Action("BlockCar", "Car" ,null)" data-id="test">
-            Block car
-        </button>
-
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-            Launch demo modal
-        </button>
+        
         @try
         {
             @if (!(Model == null))

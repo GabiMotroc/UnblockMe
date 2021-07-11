@@ -171,12 +171,7 @@ namespace UnblockMe.Controllers
 
         public IActionResult BlockCar()
         {
-            return PartialView("BlockCarPartialView.cshtml");
-        }
-
-        public IActionResult exampleModal()
-        {
-            return View();
+            return PartialView("BlockCarPartial");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
