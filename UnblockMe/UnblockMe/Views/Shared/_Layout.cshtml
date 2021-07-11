@@ -27,7 +27,6 @@
 
                         @if (SignInManager.IsSignedIn(User))
                         {
-                            <div id="PlaceHolderHere"></div>
                             <li>
                                 <button type="button" class="btn btn-primary" data-toggle="ajax-modal" data-target="#BlockCarPartial"
                                         data-url="@Url.Action("BlockCarPartial", "Car")" data-id="test" style="background-color: red; color: black">

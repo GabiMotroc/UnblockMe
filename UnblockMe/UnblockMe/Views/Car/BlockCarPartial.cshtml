@@ -1,27 +1,37 @@
 ﻿@model List<string>
-    <div class="modal" id="BlockCarPartial" style="width:50%; align-content:center ">
 
-        <div class="moda-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="test">Block a car</h4>
-                    <button type="button" class="close" data-dismiss="modal">
-                        <span>X</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <p></p>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" data-save="modal">Save</button>
+<div class="modal" id="BlockCarPartial" style="width:50%; align-content:center ">
 
-                </div>
+    <div class="moda-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="test">Block a car</h4>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>X</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("BlockCar", "Car", FormMethod.Post))
+
+                {
+                    <label for="SelectedUserRoleId">User Role</label>
+                    <select id="SelectOwnPlate" name="SelectOwnPlate">
+                        @foreach (var item in Model)
+                        {
+                            <option value="@item">@item</option>
+                        }
+                    </select>
+                    @*@Html.TextAreaFor(Model.);*@
+                    <input type="submit" value="Submit"/>
+                }
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-save="modal">Save</button>
+
             </div>
         </div>
     </div>
+</div>

@@ -25,6 +25,16 @@
   background-color: #000 !important;
 }
 
-[data-theme="dark"] text-dark {
+[data-theme="dark"] .text-dark {
   background-color: #eee !important;
 }
+
+    [data-theme="dark"] .modal-header {
+        background-color: #111 !important;
+    }
+    [data-theme="dark"] .modal-body {
+        background-color: #111 !important;
+    }
+    [data-theme="dark"] .modal-footer {
+        background-color: #111 !important;
+    }
