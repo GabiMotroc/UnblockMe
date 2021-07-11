@@ -11,10 +11,7 @@ namespace UnblockMe.Models
 {
     public partial class User : IdentityUser
     {
-        public User()
-        {
-            Car = new HashSet<Car>();
-        }
+
         [PersonalData]
         [Column(TypeName = "nvarchar(40)")]
         public string FirstName { get; set; }

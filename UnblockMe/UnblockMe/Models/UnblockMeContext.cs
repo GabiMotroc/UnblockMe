@@ -22,6 +22,8 @@ namespace UnblockMe.Models
 
         public virtual DbSet<Car> Car{ get; set; }
 
+        public virtual DbSet<User> ApplicationUsers { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)

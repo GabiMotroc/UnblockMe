@@ -18,6 +18,7 @@ namespace UnblockMe.Controllers
     {
         private const string HomeView = "~/Views/Home/Search.cshtml";
         private const string ViewPlateView = "~/Views/Car/ViewLicencePlate.cshtml";
+        private const string BlockPartial = "~/BlockCarPartialView.cshtml";
 
         private readonly ICarService _carService;
         private readonly IUserService _userService;
@@ -96,13 +97,31 @@ namespace UnblockMe.Controllers
                 {
                     if (Model.Equals(null))
                     {
-                        return View(HomeView);
+                        return View(HomeView, Model);
                     }
                 }
                 catch { }
                 return View("ViewLicencePlate", Model);
             }
-            return View(HomeView);
+            return View(HomeView, null);
+        }
+
+        [HttpGet]
+        public IActionResult SearchCar([FromQuery] string text)
+        {
+            if (text != null)
+            {
+                var cars = _carService.GetCarByPartialPlate(text);
+                try
+                {
+                    if (!cars.Equals(null))
+                    {
+                        return View(HomeView, cars);
+                    }
+                }
+                catch { }
+            }
+            return View(HomeView, null);
         }
         [HttpGet]
         public IActionResult EditCar(string text)
@@ -136,14 +155,27 @@ namespace UnblockMe.Controllers
 
         public IActionResult ViewContact([FromQuery] string text)
         {
+            Car car = null;
+            User user = null;
+
             try
             {
-                var car = _carService.GetCarByPlate(text);
-                var user = _userService.GetOwnerOfACar(car);
+                car = _carService.GetCarByPlate(text);
+                user = _userService.GetOwnerOfACar(car);
                 var tuple = (car, user);
-                return View(tuple);
+                return PartialView("ViewContactPartial", tuple);
             }
             catch { }
+            return PartialView("ViewContactPartial", (car, user));
+        }
+
+        public IActionResult BlockCar()
+        {
+            return PartialView("BlockCarPartialView.cshtml");
+        }
+
+        public IActionResult exampleModal()
+        {
             return View();
         }
 

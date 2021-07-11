@@ -7,19 +7,111 @@
     ViewData["Title"] = "Home Page";
 }
 
-@model Car
+@model List<Car>
+
+<style>
+    .btn {
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    th.buttons {
+        width: 0%;
+        padding: 0;
+    }
+
+    .ind-buttons {
+        color: blue;
+        font-size: 85%;
+        vertical-align: bottom;
+        text-align: left;
+    }
+
+    th.blocked, th.blocks, th.licence, td.blocked, td.blocks, td.licence {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+        color: black;
+    }
+</style>
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     @if (SignInManager.IsSignedIn(User))
     {
-        @using (Html.BeginForm("searchCar", "Car", FormMethod.Post))
+        <form action="/Car/SearchCar">
+            <input type="text" id="fname" name="text">
+            <input type="submit" value="Search" />
+        </form>
+
+        <button type="button" class="btn btn-primary" data-toggle="ajax-modal" data-target="#BlockCar"
+                data-url="@Url.Action("BlockCar", "Car" ,null)" data-id="test">
+            Block car
+        </button>
+
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+            Launch demo modal
+        </button>
+        @try
         {
-            //var item = Model.FirstOrDefault(null);
-            @Html.TextBoxFor(x => Model.LicencePlate)
-            <input type="submit" name="text" value="Search">
+            @if (!(Model == null))
+            {
+                if (Model.Count != 0)
+                {
+                    <table>
+
+                        <tr>
+                            <th class="licence">Licence Plate</th>
+                            <th class="blocked">Is blocked by</th>
+                            <th class="blocks">Is blocking</th>
+                            <th class="buttons"></th>
+                        </tr>
+
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="licence">
+                                    <button type="button" class="btn btn-link" data-toggle="ajax-modal" data-target="#Car"
+                                            data-url="@Url.Action("ViewContact", "Car", new { text = item.LicencePlate })" data-id="@item.LicencePlate">
+                                        @item.LicencePlate
+                                    </button>
+                                </td>
+
+                                <td class="blocked">
+                                    <button type="button" class="btn btn-link" data-toggle="ajax-modal" data-target="#Car"
+                                            data-url="@Url.Action("ViewContact", "Car", new { text = item.BockedBy })" data-id="@item.LicencePlate">
+                                        @item.BockedBy
+                                    </button>
+                                </td>
+                                <td class="blocks">
+                                    <div id="PlaceHolderHere"></div>
+                                    <button type="button" class="btn btn-link" data-toggle="ajax-modal" data-target="#Car"
+                                            data-url="@Url.Action("ViewContact", "Car", new { text = item.Blocks })" data-id="@item.LicencePlate">
+                                        @item.Blocks
+                                    </button>
+                                </td>
+                                <td class="buttons">
+                                    <div id="PlaceHolderHere"></div>
+                                    <button type="button" class="btn btn-link" data-toggle="ajax-modal" data-target="#Car"
+                                            data-url="@Url.Action("EditCar", "Car", new { text = item.LicencePlate })" data-id="@item.LicencePlate">
+                                        <i class="fa fa-edit"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                }
+                else
+                {
+                    <h5>None found.</h5>
+                }
+            }
         }
-      
+        catch { }
+
     }
     else
     {

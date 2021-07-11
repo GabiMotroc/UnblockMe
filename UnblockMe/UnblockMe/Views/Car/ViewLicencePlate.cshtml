@@ -39,12 +39,6 @@
 </head>
 <body>
 
-    <script>
-        function Function(c) { console.log(c); }
-
-         
-    </script>
-
     @if (!(Model.Count == 0) && (!Model.Equals(null)))
     {
         <table>
@@ -60,7 +54,11 @@
             {
                 <tr>
                     <td class="licence">
-                        @Html.ActionLink(
+                        <button type="button" class="btn btn-link" data-toggle="ajax-modal" data-target="#Car"
+                                data-url="@Url.Action("ViewContact", "Car", new { text=item.LicencePlate })" data-id="@item.LicencePlate">
+                            @item.LicencePlate
+                        </button>
+                        @*@Html.ActionLink(
          item.LicencePlate,                                                 // linkText
          "ViewContact",                                                   // actionName
          "Car",                                                      // controllerName
@@ -73,11 +71,15 @@
             @style = "color: black"
 
         }                                                // htmlAttributes
-         )
+         )*@
                     </td>
 
                     <td class="blocked">
-                        @Html.ActionLink(
+                        <button type="button" class="btn btn-link" data-toggle="ajax-modal" data-target="#Car"
+                                data-url="@Url.Action("ViewContact", "Car", new { text=item.BockedBy })" data-id="@item.LicencePlate">
+                            @item.BockedBy
+                        </button>
+                        @*@Html.ActionLink(
              item.BockedBy ?? "",                                                 // linkText
              "ViewContact",                                                   // actionName
              "Car",                                                      // controllerName
@@ -90,31 +92,22 @@
                  @style = "color: black"
 
              }                                                                      // htmlAttributes
-             )
+             )*@
                     </td>
                     <td class="blocks">
-                        @Html.ActionLink(
-             item.Blocks ?? "",                                                 // linkText
-             "ViewContact",                                                   // actionName
-             "Car",                                                      // controllerName
-             new
-             {                                                     // routeValues
-                 text = item.Blocks ?? ""
-             },
-             new
-             {
-                 @style = "color: black"
-
-             }                                                                          // htmlAttributes
-             )
+                        <div id="PlaceHolderHere"></div>
+                        <button type="button" class="btn btn-link" data-toggle="ajax-modal" data-target="#Car"
+                                data-url="@Url.Action("ViewContact", "Car", new { text=item.Blocks })" data-id="@item.LicencePlate">
+                            @item.Blocks
+                        </button>
                     </td>
                     <td class="buttons">
                         @*<div id="Edit" class="ind-buttons" onclick="Function('@item.LicencePlate')">Edit</div>*@
                         <div id="PlaceHolderHere"></div>
                         <button type="button" class="btn btn-link" data-toggle="ajax-modal" data-target="#Car"
-                data-url="@Url.Action("EditCar", "Car", new { text=item.LicencePlate })" data-id="@item.LicencePlate">
-            <i class="fa fa-edit"></i>
-        </button>
+                            data-url="@Url.Action("EditCar", "Car", new { text=item.LicencePlate })" data-id="@item.LicencePlate">
+                            <i class="fa fa-edit"></i>
+                        </button>
                         @*@Html.ActionLink(
                        "EditCar", 
                        "EditCar", 
