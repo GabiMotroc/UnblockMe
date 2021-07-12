@@ -225,6 +225,33 @@ namespace UnblockMe.Controllers
             return View(null);
         }
 
+        public IActionResult UnblockCar(string otherCar)
+        {
+            var cars = _carService.GetCarsOfAnOwner(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var OtherCar = _carService.GetCarByPlate(otherCar);
+            try
+            {
+                if(!cars.Equals(null) && cars.Count() > 0)
+                {
+                    foreach(var item in cars)
+                    {
+                        if(item.Blocks == otherCar)
+                        {
+                            item.Blocks = "";
+                            _carService.UpdateCar(item);
+                        }
+                    }
+                }
+                if(OtherCar.BockedBy == cars.First().LicencePlate)
+                {
+                    OtherCar.BockedBy = "";
+                    _carService.UpdateCar(OtherCar);
+                }
+            }
+            catch (Exception) { }
+            return View(HomeView);
+        }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

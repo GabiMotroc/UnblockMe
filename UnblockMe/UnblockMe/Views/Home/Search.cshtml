@@ -88,8 +88,12 @@
 
                                     <button type="button" class="c-button btn btn-primary" data-toggle="ajax-modal" data-target="#BlockCarPartial"
                                             data-url="@Url.Action("BlockCarPartial", "Car", new { otherCar = item.LicencePlate })" data-id="test">
-                                        Block car
+                                        Block
                                     </button>
+                                    <input type="button" class="c-button btn btn-primary" 
+                                            onclick="location.href = '@Url.Action("UnblockCar", "Car", new { otherCar = item.LicencePlate })'"
+                                        value = "Unblock" />
+                                    
                                 </td>
                             </tr>
                         }
