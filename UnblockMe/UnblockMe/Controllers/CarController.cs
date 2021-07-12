@@ -111,7 +111,7 @@ namespace UnblockMe.Controllers
         {
             if (text != null)
             {
-                var cars = _carService.GetCarByPartialPlate(text);
+                var cars = _carService.GetFirstNCarsByPartialPlate(text, 3);
                 try
                 {
                     if (!cars.Equals(null))
@@ -190,6 +190,10 @@ namespace UnblockMe.Controllers
             var OtherCar = _carService.GetCarByPlate(otherCar);
             try
             {
+                if(OwnCar == null)
+                {
+                    OwnCar = _carService.GetCarsOfAnOwner(User.FindFirstValue(ClaimTypes.NameIdentifier)).FirstOrDefault(null);
+                }
                 if (OwnCar.OwnerId == User.FindFirstValue(ClaimTypes.NameIdentifier))
                 {
                     if (OtherCar != null)

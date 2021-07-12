@@ -1274,6 +1274,6 @@ C:\Users\motro\Desktop\New folder\UnblockMe\UnblockMe\obj\Debug\netcoreapp3.1\Ra
 F:\Projects\Git\UnblockMe\UnblockMe\obj\Debug\netcoreapp3.1\Razor\Views\Car\EditCarPartial.cshtml.g.cs
 C:\Users\motro\Desktop\New folder\UnblockMe\UnblockMe\obj\Debug\netcoreapp3.1\Razor\Views\Car\EditCarPartial.cshtml.g.cs
 C:\Users\motro\Desktop\New folder\UnblockMe\UnblockMe\obj\Debug\netcoreapp3.1\Razor\Views\Car\ViewContactPartial.cshtml.g.cs
-C:\Users\motro\Desktop\New folder\UnblockMe\UnblockMe\obj\Debug\netcoreapp3.1\Razor\Views\Shared\BlockCarPartialView.cshtml.g.cs
 F:\Projects\Git\UnblockMe\UnblockMe\obj\Debug\netcoreapp3.1\Razor\Views\Car\ViewContactPartial.cshtml.g.cs
 F:\Projects\Git\UnblockMe\UnblockMe\obj\Debug\netcoreapp3.1\Razor\Views\Car\BlockCarPartial.cshtml.g.cs
+C:\Users\motro\Desktop\New folder\UnblockMe\UnblockMe\obj\Debug\netcoreapp3.1\Razor\Views\Car\BlockCarPartial.cshtml.g.cs

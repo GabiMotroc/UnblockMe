@@ -17,6 +17,7 @@
     .modal-tall .modal-content {
         height: 100%;
     }
+
     .top-buffer {
         margin-top: 20px;
     }
@@ -39,41 +40,50 @@
                 {
                     <p>You dont currently have any cars registered.</p>
                 }
-                else
+                else if (Model.OwnCars.Count == 1 && Model.OtherCar != null)
+                {
                     @using (Html.BeginForm("BlockCar", "Car", FormMethod.Get))
                     {
-                        <div>
-                            <div class="top-buffer">
-                                @if (Model.OwnCars.Count > 1)
-                                {
-                                    <label for="SelectedOwnCar">Select own car</label>
-                                    <select id="SelectOwnPlate" name="ownCar">
-                                        @foreach (var item in Model.OwnCars)
-                                        {
-                                            <option value="@item">@item</option>
-                                        }
-                                    </select>
-                                }
-                                else
-                                {
-                                    <input type="hidden" id="SelectOtherCar" name="otherCar" value="@Model.OwnCars.First()" />
-                                }
-                            </div>
-                            <hr />
-                            <div class="top-buffer">
-                                @if (Model.OtherCar == null)
-                                {
-                                    <p>Introduce the other car's licence plate:</p>
-                                    <textarea id="SelectOtherCar" name="otherCar">@Model.OtherCar</textarea>
-                                }
-                                else
-                                {
-                                    <input type="hidden" id="SelectOtherCar" name="otherCar" value="@Model.OtherCar" />
-                                }
-                            </div>
-                            <input type="submit" class="top-buffer btn-primary" value="Submit" />
-                        </div>
+                        <input type ="hidden" value="@Model.OwnCars.FirstOrDefault()" name="ownCar"/>
+                        <input type="hidden" value="@Model.OtherCar" name="otherCar"/>
+                        <input type="submit" class="btn btn-primary" value="Press to conform." />
                     }
+                }
+                else
+                    @using(Html.BeginForm("BlockCar", "Car", FormMethod.Get))
+                {
+                <div>
+                    <div class="top-buffer">
+                        @if (Model.OwnCars.Count > 1)
+                        {
+                            <label for="SelectedOwnCar">Select own car</label>
+                            <select id="SelectOwnPlate" name="ownCar">
+                                @foreach (var item in Model.OwnCars)
+                                {
+                                    <option value="@item">@item</option>
+                                }
+                            </select>
+                        }
+                        else
+                        {
+                            <input type="hidden" id="SelectOtherCar" name="otherCar" value="@Model.OwnCars.First()" />
+                        }
+                    </div>
+                    <hr />
+                    <div class="top-buffer">
+                        @if (Model.OtherCar == null)
+                        {
+                            <p>Introduce the other car's licence plate:</p>
+                            <textarea id="SelectOtherCar" name="otherCar">@Model.OtherCar</textarea>
+                        }
+                        else
+                        {
+                            <input type="hidden" id="SelectOtherCar" name="otherCar" value="@Model.OtherCar" />
+                        }
+                    </div>
+                    <input type="submit" class="top-buffer btn-primary" value="Submit" />
+                </div>
+            }
 
             </div>
 

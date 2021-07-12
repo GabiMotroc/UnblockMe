@@ -2,6 +2,23 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnblockMe.Models;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
+using UnblockMe.Models;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.Data.SqlClient;
+using UnblockMe.Services;
+
 
 namespace UnblockMe.Controllers
 {
@@ -21,6 +38,15 @@ namespace UnblockMe.Controllers
                     .Where(a => a.LicencePlate.Contains(licencePlate))
                     .ToList();
 
+            return cars;
+        }
+
+        public List<Car> GetFirstNCarsByPartialPlate(string licencePlate, int n)
+        {
+            var cars = _context.Car
+                    .Where(a => a.LicencePlate.Contains(licencePlate))
+                    .Take(n)
+                    .ToList();
             return cars;
         }
         public Car GetCarByPlate(string licencePlate)
@@ -69,5 +95,6 @@ namespace UnblockMe.Controllers
         public void RemoveCar(Car input);
         void AddCarAndOwner(Car item, string v);
         List<Car> GetCarsOfAnOwner(string owner);
+        List<Car> GetFirstNCarsByPartialPlate(string licencePlate, int n);
     }
 }

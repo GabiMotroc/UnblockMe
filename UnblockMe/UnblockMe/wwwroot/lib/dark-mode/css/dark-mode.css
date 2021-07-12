@@ -44,3 +44,7 @@
     [data-theme="dark"] hr {
         background-color: #fff !important;
     }
+
+    [data-theme="dark"] .close {
+        background-color: #fff !important;
+    }
