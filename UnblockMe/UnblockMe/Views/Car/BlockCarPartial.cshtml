@@ -17,7 +17,9 @@
     .modal-tall .modal-content {
         height: 100%;
     }
-
+    .top-buffer {
+        margin-top: 20px;
+    }
     /* fix SO stick navigation ;) */
 
 </style>
@@ -41,7 +43,7 @@
                     @using (Html.BeginForm("BlockCar", "Car", FormMethod.Get))
                     {
                         <div>
-                            <div>
+                            <div class="top-buffer">
                                 @if (Model.OwnCars.Count > 1)
                                 {
                                     <label for="SelectedOwnCar">Select own car</label>
@@ -57,9 +59,11 @@
                                     <input type="hidden" id="SelectOtherCar" name="otherCar" value="@Model.OwnCars.First()" />
                                 }
                             </div>
-                            <div>
+                            <hr />
+                            <div class="top-buffer">
                                 @if (Model.OtherCar == null)
                                 {
+                                    <p>Introduce the other car's licence plate:</p>
                                     <textarea id="SelectOtherCar" name="otherCar">@Model.OtherCar</textarea>
                                 }
                                 else
@@ -67,7 +71,7 @@
                                     <input type="hidden" id="SelectOtherCar" name="otherCar" value="@Model.OtherCar" />
                                 }
                             </div>
-                            <input type="submit" class="btn btn-primary" value="Submit" />
+                            <input type="submit" class="top-buffer btn-primary" value="Submit" />
                         </div>
                     }
 
