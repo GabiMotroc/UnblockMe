@@ -19,7 +19,7 @@
     }
 
     th.buttons {
-        width: 0%;
+        width: 15%;
         padding: 0;
     }
 
@@ -34,6 +34,17 @@
         padding: 10px;
         text-align: left;
         border-bottom: 1px solid #ddd;
+    }
+
+    .float-container {
+        border: 3px solid #fff;
+        padding: 20px;
+    }
+
+    .float-child {
+        width: 40%;
+        float: left;
+        padding: 20px;
     }
 </style>
 
@@ -58,7 +69,7 @@
                             <th class="licence">Licence Plate</th>
                             <th class="blocked">Is blocked by</th>
                             <th class="blocks">Is blocking</th>
-                            <th class="buttons"></th>
+                            <th class="buttons">Commands</th>
                         </tr>
 
                         @foreach (var item in Model)
@@ -85,15 +96,19 @@
                                     </button>
                                 </td>
                                 <td class="buttons">
-
-                                    <button type="button" class="c-button btn btn-primary" data-toggle="ajax-modal" data-target="#BlockCarPartial"
-                                            data-url="@Url.Action("BlockCarPartial", "Car", new { otherCar = item.LicencePlate })" data-id="test">
-                                        Block
-                                    </button>
-                                    <input type="button" class="c-button btn btn-primary" 
-                                            onclick="location.href = '@Url.Action("UnblockCar", "Car", new { otherCar = item.LicencePlate })'"
-                                        value = "Unblock" />
-                                    
+                                    <div class="float-contaier">
+                                        <div class="float-child">
+                                            <button type="button" class="c-button btn btn-primary" data-toggle="ajax-modal" data-target="#BlockCarPartial"
+                                                    data-url="@Url.Action("BlockCarPartial", "Car", new { otherCar = item.LicencePlate })" data-id="test">
+                                                Block
+                                            </button>
+                                        </div>
+                                        <div class="float-child">
+                                            <input type="button" class="c-button btn btn-primary"
+                                                   onclick="location.href = '@Url.Action("UnblockCar", "Car", new { otherCar = item.LicencePlate })'"
+                                                   value="Unblock" />
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                         }
