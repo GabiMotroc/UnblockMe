@@ -1,7 +1,28 @@
-﻿@model List<string>
+﻿@model BlockCarAuxiliary
 
 
-<div class="modal" id="BlockCarPartial" style="width:50%; align-content:center ">
+<style>
+    .modal {
+        position: absolute;
+        float: left;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .modal-tall .modal-dialog {
+        height: 90%;
+    }
+
+    .modal-tall .modal-content {
+        height: 100%;
+    }
+
+    /* fix SO stick navigation ;) */
+
+</style>
+
+<div class="modal" id="BlockCarPartial" style="width:50% ">
 
     <div class="moda-dialog">
         <div class="modal-content">
@@ -12,26 +33,47 @@
                 </button>
             </div>
             <div class="modal-body">
-                @using (Html.BeginForm("BlockCar", "Car", FormMethod.Post))
-
+                @if (Model.OwnCars.Count == 0)
                 {
-                    <label for="SelectedUserRoleId">User Role</label>
-                    <select id="SelectOwnPlate" name="SelectOwnPlate">
-                        @foreach (var item in Model)
-                        {
-                            <option value="@item">@item</option>
-                        }
-                    </select>
-                    @*@Html.TextAreaFor(Model.);*@
-                    <input type="submit" value="Submit"/>
+                    <p>You dont currently have any cars registered.</p>
                 }
+                else
+                    @using (Html.BeginForm("BlockCar", "Car", FormMethod.Get))
+                    {
+                        <div>
+                            <div>
+                                @if (Model.OwnCars.Count > 1)
+                                {
+                                    <label for="SelectedOwnCar">Select own car</label>
+                                    <select id="SelectOwnPlate" name="ownCar">
+                                        @foreach (var item in Model.OwnCars)
+                                        {
+                                            <option value="@item">@item</option>
+                                        }
+                                    </select>
+                                }
+                                else
+                                {
+                                    <input type="hidden" id="SelectOtherCar" name="otherCar" value="@Model.OwnCars.First()" />
+                                }
+                            </div>
+                            <div>
+                                @if (Model.OtherCar == null)
+                                {
+                                    <textarea id="SelectOtherCar" name="otherCar">@Model.OtherCar</textarea>
+                                }
+                                else
+                                {
+                                    <input type="hidden" id="SelectOtherCar" name="otherCar" value="@Model.OtherCar" />
+                                }
+                            </div>
+                            <input type="submit" class="btn btn-primary" value="Submit" />
+                        </div>
+                    }
+
             </div>
 
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" data-save="modal">Save</button>
-
-            </div>
         </div>
     </div>
 </div>
+    </div>

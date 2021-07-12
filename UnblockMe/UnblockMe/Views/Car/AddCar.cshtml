@@ -10,89 +10,90 @@
 
 @using (Html.BeginForm("AddCar", "Car", FormMethod.Post))
 {
-    <body style="align-content: center">
-        <style>
+<body style="align-content: center">
+    <div id="PlaceHolderHere"></div>
+    <style>
 
-            .box {
-                width: 100%;
-                float: left;
-                margin-right: 10px;
-                margin-top: -5px;
-                box-sizing: border-box;
-                align-content: center;
+        .box {
+            width: 100%;
+            float: left;
+            margin-right: 10px;
+            margin-top: -5px;
+            box-sizing: border-box;
+            align-content: center;
+        }
+
+        span.asterisk {
+            color: red;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        .wrap {
+            padding-top: 20px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .button {
+            width: 140px;
+            height: 45px;
+            font-family: 'Roboto', sans-serif;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            font-weight: 500;
+            color: #000;
+            background-color: #fff;
+            border: none;
+            border-radius: 45px;
+            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease 0s;
+            cursor: pointer;
+            outline: none;
+        }
+
+            .button:hover {
+                background-color: #2EE59D;
+                box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
+                color: #fff;
+                transform: translateY(-7px);
             }
+    </style>
 
-            span.asterisk {
-                color: red;
-            }
+    <h3>Introduce the details of the car that you want to add.</h3>
 
-            html, body {
-                height: 100%;
-            }
+    <div class="box">
+        <label style=" float:left; margin-right:20px;">Licence Plate<span class="asterisk">*</span>:</label>
+        @Html.TextBoxFor(x => x.LicencePlate, new { @class = "box", @placeholder = "Licence Plate..."@*, @required = "required"*@ })
 
-            .wrap {
-                padding-top: 20px;
-                height: 100%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
+        <label style=" float:left; margin-right:20px;">Maker: </label>
+        @Html.TextAreaFor(x => x.Maker, new { @class = "box", @placeholder = "Maker..." })
 
-            .button {
-                width: 140px;
-                height: 45px;
-                font-family: 'Roboto', sans-serif;
-                font-size: 11px;
-                text-transform: uppercase;
-                letter-spacing: 2.5px;
-                font-weight: 500;
-                color: #000;
-                background-color: #fff;
-                border: none;
-                border-radius: 45px;
-                box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
-                transition: all 0.3s ease 0s;
-                cursor: pointer;
-                outline: none;
-            }
+        <label style=" float:left; margin-right:20px;">Model: </label>
+        @Html.TextAreaFor(x => x.Model, new { @class = "box", @placeholder = "Model..." })
 
-                .button:hover {
-                    background-color: #2EE59D;
-                    box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
-                    color: #fff;
-                    transform: translateY(-7px);
-                }
-        </style>
+        <label style=" float:left; margin-right:20px;">Colour: </label>
+        @Html.TextAreaFor(x => x.Colour, new { @class = "box", @placeholder = "Colour..." })
 
-        <h3>Introduce the details of the car that you want to add.</h3>
+        <label style=" float:left; margin-right:20px;">Blocks: </label>
+        @Html.TextAreaFor(x => x.Blocks, new { @class = "box", @placeholder = "The licence plate of the car that you are blocking..." })
 
-        <div class="box">
-            <label style=" float:left; margin-right:20px;">Licence Plate<span class="asterisk">*</span>:</label>
-            @Html.TextBoxFor(x => x.LicencePlate, new { @class = "box", @placeholder = "Licence Plate..."@*, @required = "required"*@ })
-
-            <label style=" float:left; margin-right:20px;">Maker: </label>
-            @Html.TextAreaFor(x => x.Maker, new { @class = "box", @placeholder = "Maker..." })
-
-            <label style=" float:left; margin-right:20px;">Model: </label>
-            @Html.TextAreaFor(x => x.Model, new { @class = "box", @placeholder = "Model..." })
-
-            <label style=" float:left; margin-right:20px;">Colour: </label>
-            @Html.TextAreaFor(x => x.Colour, new { @class = "box", @placeholder = "Colour..." })
-
-            <label style=" float:left; margin-right:20px;">Blocks: </label>
-            @Html.TextAreaFor(x => x.Blocks, new { @class = "box", @placeholder = "The licence plate of the car that you are blocking..." })
-
-            <label style=" float:left; margin-right:20px;">Blocked by: </label>
-            @Html.TextAreaFor(x => x.BockedBy, new { @class = "box", @placeholder = "The licence plate of the car that blocks you..." })
+        <label style=" float:left; margin-right:20px;">Blocked by: </label>
+        @Html.TextAreaFor(x => x.BockedBy, new { @class = "box", @placeholder = "The licence plate of the car that blocks you..." })
 
 
-            <div class="warp" style="text-align: center; padding-top: 20px">
-                <input type="submit" class="button" value="Submit" />
-            </div>
-
-            <p style="margin-top: 20px">Every item with <span class="asterisk">*</span> is not optional.</p>
+        <div class="warp" style="text-align: center; padding-top: 20px">
+            <input type="submit" class="button" value="Submit" />
         </div>
-    </body>
+
+        <p style="margin-top: 20px">Every item with <span class="asterisk">*</span> is not optional.</p>
+    </div>
+</body>
 }
 
 @*@functions

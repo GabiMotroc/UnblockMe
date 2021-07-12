@@ -37,7 +37,7 @@
     </style>
 </head>
 <body>
-
+    <div id="PlaceHolderHere"></div>
     @if (!(Model.Count == 0) && (!Model.Equals(null)))
     {
         <table>
@@ -58,19 +58,19 @@
                             @item.LicencePlate
                         </button>
                         @*@Html.ActionLink(
-         item.LicencePlate,                                                 // linkText
-         "ViewContact",                                                   // actionName
-         "Car",                                                      // controllerName
-         new
-         {                                                     // routeValues
-             text = item.LicencePlate
-         },
-        new
-        {
-            @style = "color: black"
+                             item.LicencePlate,                                                 // linkText
+                             "ViewContact",                                                   // actionName
+                             "Car",                                                      // controllerName
+                             new
+                             {                                                     // routeValues
+                                 text = item.LicencePlate
+                             },
+                            new
+                            {
+                                @style = "color: black"
 
-        }                                                // htmlAttributes
-         )*@
+                            }                                                // htmlAttributes
+                             )*@
                     </td>
 
                     <td class="blocked">
@@ -79,22 +79,21 @@
                             @item.BockedBy
                         </button>
                         @*@Html.ActionLink(
-             item.BockedBy ?? "",                                                 // linkText
-             "ViewContact",                                                   // actionName
-             "Car",                                                      // controllerName
-             new
-             {                                                     // routeValues
-                 text = item.BockedBy ?? ""
-             },
-             new
-             {
-                 @style = "color: black"
+                            item.BockedBy ?? "",                                                 // linkText
+                            "ViewContact",                                                   // actionName
+                            "Car",                                                      // controllerName
+                            new
+                            {                                                     // routeValues
+                                text = item.BockedBy ?? ""
+                            },
+                            new
+                            {
+                                @style = "color: black"
 
-             }                                                                      // htmlAttributes
-             )*@
+                            }                                                                      // htmlAttributes
+                            )*@
                     </td>
                     <td class="blocks">
-                        <div id="PlaceHolderHere"></div>
                         <button type="button" class="btn btn-link" data-toggle="ajax-modal" data-target="#Car"
                                 data-url="@Url.Action("ViewContact", "Car", new { text=item.Blocks })" data-id="@item.LicencePlate">
                             @item.Blocks
@@ -104,20 +103,20 @@
                         @*<div id="Edit" class="ind-buttons" onclick="Function('@item.LicencePlate')">Edit</div>*@
                         <div id="PlaceHolderHere"></div>
                         <button type="button" class="btn btn-link" data-toggle="ajax-modal" data-target="#Car"
-                            data-url="@Url.Action("EditCar", "Car", new { text=item.LicencePlate })" data-id="@item.LicencePlate">
+                                data-url="@Url.Action("EditCar", "Car", new { text=item.LicencePlate })" data-id="@item.LicencePlate">
                             <i class="fa fa-edit"></i>
                         </button>
                         @*@Html.ActionLink(
-                       "EditCar", 
-                       "EditCar", 
-                       "Car", 
-                       new { text = item.LicencePlate },
-                       new 
-                       { 
-                           @data_toggle = "ajax-modal", 
-                           @data_target = "#Car", 
-                           @id = "editActionLink"
-                       })*@
+                            "EditCar",
+                            "EditCar",
+                            "Car",
+                            new { text = item.LicencePlate },
+                            new
+                            {
+                                @data_toggle = "ajax-modal",
+                                @data_target = "#Car",
+                                @id = "editActionLink"
+                            })*@
 
                         @using (Html.BeginForm("RemoveCar", "Car", FormMethod.Post))
                         {

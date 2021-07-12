@@ -16,6 +16,21 @@
     <link href="~/lib/dark-mode/css/dark-mode.css" rel="stylesheet" />
 </head>
 <body>
+    <style>
+        .c-button {
+            background-color: royalblue;
+        }
+        .c-button:hover {
+            background: #1d49aa;
+        }
+
+        .c-button:focus {
+            outline: none;
+            box-shadow: 0 0 0 4px #cbd6ee;
+            
+        }
+    </style>
+
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm box-shadow mb-3">
             <div class="container">
@@ -28,8 +43,8 @@
                         @if (SignInManager.IsSignedIn(User))
                         {
                             <li>
-                                <button type="button" class="btn btn-primary" data-toggle="ajax-modal" data-target="#BlockCarPartial"
-                                        data-url="@Url.Action("BlockCarPartial", "Car")" data-id="test" style="background-color: red; color: black">
+                                <button type="button" class="c-button btn btn-primary" data-toggle="ajax-modal" data-target="#BlockCarPartial"
+                                        data-url="@Url.Action("BlockCarPartial", "Car")" data-id="test" >
                                     Block car
                                 </button>
                             </li>

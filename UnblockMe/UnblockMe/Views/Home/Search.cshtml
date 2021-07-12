@@ -45,7 +45,7 @@
             <input type="text" id="fname" name="text">
             <input type="submit" value="Search" />
         </form>
-
+        <div id="PlaceHolderHere"></div>
         @try
         {
             @if (!(Model == null))
@@ -85,10 +85,10 @@
                                     </button>
                                 </td>
                                 <td class="buttons">
-                                    <div id="PlaceHolderHere"></div>
-                                    <button type="button" class="btn btn-link" data-toggle="ajax-modal" data-target="#Car"
-                                            data-url="@Url.Action("EditCar", "Car", new { text = item.LicencePlate })" data-id="@item.LicencePlate">
-                                        <i class="fa fa-edit"></i>
+
+                                    <button type="button" class="c-button btn btn-primary" data-toggle="ajax-modal" data-target="#BlockCarPartial"
+                                            data-url="@Url.Action("BlockCarPartial", "Car", new { otherCar = item.LicencePlate })" data-id="test">
+                                        Block car
                                     </button>
                                 </td>
                             </tr>

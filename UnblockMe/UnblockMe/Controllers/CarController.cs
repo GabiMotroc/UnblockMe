@@ -72,9 +72,9 @@ namespace UnblockMe.Controllers
                 var car = _carService.GetCarByPlate(text);
                 if (car.OwnerId == User.FindFirstValue(ClaimTypes.NameIdentifier))
                 {
-                   _carService.RemoveCar(car);
+                    _carService.RemoveCar(car);
                 }
-                else 
+                else
                 {
                     Console.WriteLine("you are not the owner of ths car");
                 }
@@ -169,22 +169,62 @@ namespace UnblockMe.Controllers
             return PartialView("ViewContactPartial", (car, user));
         }
 
-        public IActionResult BlockCarPartial()
+
+        public IActionResult BlockCarPartial(string otherCar)
         {
             var plates = new List<string>();
             var cars = _carService.GetCarsOfAnOwner(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            foreach(var item in cars)
+            foreach (var item in cars)
             {
                 plates.Add(item.LicencePlate);
             }
-            return PartialView(plates);
+            BlockCarAuxiliary result = new BlockCarAuxiliary(plates, otherCar);
+            return PartialView(result);
         }
 
-        [HttpPost]
-        public IActionResult BlockCar(List<string> text)
+        [HttpGet]
+        public IActionResult BlockCar(string ownCar, string otherCar)
+        {
+
+            var OwnCar = _carService.GetCarByPlate(ownCar);
+            var OtherCar = _carService.GetCarByPlate(otherCar);
+            try
+            {
+                if (OwnCar.OwnerId == User.FindFirstValue(ClaimTypes.NameIdentifier))
+                {
+                    if (OtherCar != null)
+                    {
+                        OwnCar.Blocks = otherCar;
+                        _carService.UpdateCar(OwnCar);
+                        OtherCar.BockedBy = ownCar;
+
+                        _carService.UpdateCar(OtherCar);
+                        _notyfService.Success("Car blocked with success.");
+                    }
+                    else
+                    {
+                        OwnCar.Blocks = otherCar;
+                        _carService.UpdateCar(OwnCar);
+                        _notyfService.Warning("The selected car was not found but your status has been updated.");
+                    }
+                }
+                else
+                {
+                    _notyfService.Warning("You are not the owner of the car.");
+                }
+            }
+            catch (Exception) { }
+
+            return View(HomeView);
+
+        }
+
+        [Route("Car/BlockCar/{otherCar}")]
+        public IActionResult BlockCar(string otherCar)
         {
             return View(null);
         }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
@@ -193,4 +233,3 @@ namespace UnblockMe.Controllers
         }
     }
 }
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
