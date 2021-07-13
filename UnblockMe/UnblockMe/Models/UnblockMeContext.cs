@@ -24,6 +24,8 @@ namespace UnblockMe.Models
 
         public virtual DbSet<User> ApplicationUsers { get; set; }
 
+        public virtual DbSet<CarPhoto> CarPhoto { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -71,11 +73,20 @@ namespace UnblockMe.Models
                 entity.Property(e => e.OwnerId)
                     .HasColumnName("ownerId");
 
+                entity.Property(e => e.PhotoId)
+                    .HasColumnName("photoId");
+
                 entity.HasOne(d => d.Owner)
                     .WithMany(p => p.Car)
                     .HasForeignKey(d => d.OwnerId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_car_owner");
+
+                entity.HasOne(d => d.Photo)
+                    .WithOne(p => p.Car)
+                    .HasForeignKey<Car>(d => d.PhotoId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_car_photo");
             });
 
             modelBuilder.Entity<User>(entity =>
@@ -89,6 +100,19 @@ namespace UnblockMe.Models
                     .HasMaxLength(30);
             });
 
+            modelBuilder.Entity<CarPhoto>(entity =>
+            {
+                entity.HasKey(e => e.PhotoId)
+                    .HasName("PK_CarPhoto");
+
+                entity.ToTable("CarPhoto");
+
+                entity.Property(e => e.PhotoId)
+                    .HasColumnName("photoId");
+
+                entity.Property(e => e.Photo)
+                    .HasColumnName("photo");
+            });
             OnModelCreatingPartial(modelBuilder);
         }
 

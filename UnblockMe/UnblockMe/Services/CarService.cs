@@ -18,7 +18,8 @@ using System.Security.Claims;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.Data.SqlClient;
 using UnblockMe.Services;
-
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace UnblockMe.Controllers
 {
@@ -74,6 +75,79 @@ namespace UnblockMe.Controllers
             _context.Car.Add(car);
             _context.SaveChanges();
         }
+
+        public Car GetCarWithPhoto(string plate)
+        {
+            var car = GetCarByPlate(plate);
+            try
+            {
+                if(car != null)
+                {
+                    if(car.Photo != null)
+                    {
+                        return car;
+                    }
+                    if(car.PhotoId != null)
+                    {
+                        car.Photo = _context.CarPhoto.Where(b => b.PhotoId.Equals(car.PhotoId)).FirstOrDefault();
+                        return car;
+                    }
+                }
+            } catch(Exception) { }
+            return car;
+        }
+
+        public void AddPhotoToCar(string plate, IFormFile image)
+        {
+            var car = GetCarByPlate(plate);
+            try
+            {
+                if (car.PhotoId == null)
+                {
+                    Guid g = Guid.NewGuid();
+
+                    CarPhoto photo = new CarPhoto
+                    {
+                        PhotoId = g.ToString()//,
+                        //Photo = image
+                    };
+
+                    car.PhotoId = g.ToString();
+
+                    _context.Car.Update(car);
+                    _context.CarPhoto.Add(photo);
+                    _context.SaveChanges();
+
+                }
+            }catch { }
+        }
+
+        public void AddCarWithPhoto(Car car, IFormFile image, string owner)
+        {
+            try
+            {
+                if (car != null && image != null)
+                {                   
+                    Guid g = Guid.NewGuid();
+                    car.PhotoId = g.ToString();
+                    car.OwnerId = owner;
+                    var carPhoto = car.Photo;
+                    carPhoto.PhotoId = g.ToString();
+
+                    using (var ms = new MemoryStream())
+                    {
+                        image.CopyTo(ms);
+                        var fileBytes = ms.ToArray();
+                        string s = Convert.ToBase64String(fileBytes);
+                        carPhoto.Photo = s;
+                    }
+
+                    _context.Car.Add(car);
+                    _context.CarPhoto.Add(carPhoto);
+                    _context.SaveChanges();
+                }
+            }catch { }
+        }
         public void UpdateCar(Car input)
         {
             _context.Car.Update(input);
@@ -96,5 +170,7 @@ namespace UnblockMe.Controllers
         void AddCarAndOwner(Car item, string v);
         List<Car> GetCarsOfAnOwner(string owner);
         List<Car> GetFirstNCarsByPartialPlate(string licencePlate, int n);
+        void AddCarWithPhoto(Car car, IFormFile image, string owner);
+        void AddPhotoToCar(string plate, IFormFile image);
     }
 }

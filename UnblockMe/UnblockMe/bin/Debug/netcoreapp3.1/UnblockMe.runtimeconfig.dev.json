@@ -1,8 +1,8 @@
 {
   "runtimeOptions": {
     "additionalProbingPaths": [
-      "C:\\Users\\motro\\.dotnet\\store\\|arch|\\|tfm|",
-      "C:\\Users\\motro\\.nuget\\packages"
+      "C:\\Users\\abi\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\abi\\.nuget\\packages"
     ]
   }
 }

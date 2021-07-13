@@ -19,6 +19,7 @@ namespace UnblockMe.Controllers
         private const string HomeView = "~/Views/Home/Search.cshtml";
         private const string ViewPlateView = "~/Views/Car/ViewLicencePlate.cshtml";
         private const string BlockPartial = "~/BlockCarPartialView.cshtml";
+        private const string AddACarView = "~/Views/Car/AddCar.cshtml";
 
         private readonly ICarService _carService;
         private readonly IUserService _userService;
@@ -44,9 +45,16 @@ namespace UnblockMe.Controllers
         {
             try
             {
+
                 if (!item.Equals(null))
                 {
-
+                    if (item.Photo != null)
+                        if(item.Photo.PhotoFile != null)
+                    {
+                        _carService.AddCarWithPhoto(item, item.Photo.PhotoFile, User.FindFirstValue(ClaimTypes.NameIdentifier));
+                        _notyfService.Success("Car succesufuly added.");
+                        return View(HomeView);
+                    }
                     _carService.AddCarAndOwner(item, User.FindFirstValue(ClaimTypes.NameIdentifier));
                     _notyfService.Success("Car succesufuly added.");
                     return View(HomeView);
@@ -61,7 +69,11 @@ namespace UnblockMe.Controllers
             {
 
             }
-            return View();
+            var car = new Car
+            {
+                Photo = new CarPhoto()
+            };
+            return View(AddACarView, car);
         }
 
         [HttpPost]
@@ -190,7 +202,7 @@ namespace UnblockMe.Controllers
             var OtherCar = _carService.GetCarByPlate(otherCar);
             try
             {
-                if(OwnCar == null)
+                if (OwnCar == null)
                 {
                     OwnCar = _carService.GetCarsOfAnOwner(User.FindFirstValue(ClaimTypes.NameIdentifier)).FirstOrDefault(null);
                 }
@@ -235,18 +247,18 @@ namespace UnblockMe.Controllers
             var OtherCar = _carService.GetCarByPlate(otherCar);
             try
             {
-                if(!cars.Equals(null) && cars.Count() > 0)
+                if (!cars.Equals(null) && cars.Count() > 0)
                 {
-                    foreach(var item in cars)
+                    foreach (var item in cars)
                     {
-                        if(item.Blocks == otherCar)
+                        if (item.Blocks == otherCar)
                         {
                             item.Blocks = "";
                             _carService.UpdateCar(item);
                         }
                     }
                 }
-                if(OtherCar.BockedBy == cars.First().LicencePlate)
+                if (OtherCar.BockedBy == cars.First().LicencePlate)
                 {
                     OtherCar.BockedBy = "";
                     _carService.UpdateCar(OtherCar);
