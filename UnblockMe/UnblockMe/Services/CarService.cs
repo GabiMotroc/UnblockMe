@@ -81,19 +81,20 @@ namespace UnblockMe.Controllers
             var car = GetCarByPlate(plate);
             try
             {
-                if(car != null)
+                if (car != null)
                 {
-                    if(car.Photo != null)
+                    if (car.Photo != null)
                     {
                         return car;
                     }
-                    if(car.PhotoId != null)
+                    if (car.PhotoId != null)
                     {
                         car.Photo = _context.CarPhoto.Where(b => b.PhotoId.Equals(car.PhotoId)).FirstOrDefault();
                         return car;
                     }
                 }
-            } catch(Exception) { }
+            }
+            catch (Exception) { }
             return car;
         }
 
@@ -119,7 +120,8 @@ namespace UnblockMe.Controllers
                     _context.SaveChanges();
 
                 }
-            }catch { }
+            }
+            catch { }
         }
 
         public void AddCarWithPhoto(Car car, IFormFile image, string owner)
@@ -127,7 +129,7 @@ namespace UnblockMe.Controllers
             try
             {
                 if (car != null && image != null)
-                {                   
+                {
                     Guid g = Guid.NewGuid();
                     car.PhotoId = g.ToString();
                     car.OwnerId = owner;
@@ -146,12 +148,43 @@ namespace UnblockMe.Controllers
                     _context.CarPhoto.Add(carPhoto);
                     _context.SaveChanges();
                 }
-            }catch { }
+            }
+            catch { }
         }
         public void UpdateCar(Car input)
         {
             _context.Car.Update(input);
             _context.SaveChanges();
+        }
+
+        public void UpdateCar(Car input, IFormFile image)
+        {
+            try
+            {
+                if (input.PhotoId == null && image != null)
+                {
+                    AddCarWithPhoto(input, image, input.OwnerId);
+                    return;
+                }
+
+                if (image == null)
+                    UpdateCar(input);
+
+                var carPhoto = _context.CarPhoto.Where(x => x.PhotoId.Equals(input.PhotoId)).FirstOrDefault();
+
+                using (var ms = new MemoryStream())
+                {
+                    image.CopyTo(ms);
+                    var fileBytes = ms.ToArray();
+                    string s = Convert.ToBase64String(fileBytes);
+                    carPhoto.Photo = s;
+                }
+
+                _context.Car.Update(input);
+                _context.CarPhoto.Update(carPhoto);
+                _context.SaveChanges();
+            }
+            catch (Exception) { }
         }
 
         public void RemoveCar(Car input)
@@ -172,5 +205,7 @@ namespace UnblockMe.Controllers
         List<Car> GetFirstNCarsByPartialPlate(string licencePlate, int n);
         void AddCarWithPhoto(Car car, IFormFile image, string owner);
         void AddPhotoToCar(string plate, IFormFile image);
+        void UpdateCar(Car input, IFormFile image);
+        Car GetCarWithPhoto(string plate);
     }
 }

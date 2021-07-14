@@ -172,7 +172,7 @@ namespace UnblockMe.Controllers
 
             try
             {
-                car = _carService.GetCarByPlate(text);
+                car = _carService.GetCarWithPhoto(text);
                 user = _userService.GetOwnerOfACar(car);
                 var tuple = (car, user);
                 return PartialView("ViewContactPartial", tuple);
