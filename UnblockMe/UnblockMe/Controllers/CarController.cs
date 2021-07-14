@@ -45,7 +45,6 @@ namespace UnblockMe.Controllers
         {
             try
             {
-
                 if (!item.Equals(null))
                 {
                     if (item.Photo != null)
@@ -140,7 +139,10 @@ namespace UnblockMe.Controllers
         {
             try
             {
-                var car = _carService.GetCarByPlate(text);
+                var car = _carService.GetCarWithPhoto(text);
+                //var car = _carService.GetCarByPlate(text);
+                if (car.Photo == null)
+                    car.Photo = new CarPhoto();
                 return PartialView("EditCarPartial", car);
             }
             catch { }
@@ -154,7 +156,7 @@ namespace UnblockMe.Controllers
             {
                 try
                 {
-                    _carService.UpdateCar(input);
+                    _carService.UpdateCar(input, input.Photo.PhotoFile);
                 }
                 catch { }
             }

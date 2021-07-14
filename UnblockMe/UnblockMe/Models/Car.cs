@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.RegularExpressions;
 
 // Code scaffolded by EF Core assumes nullable reference types (NRTs) are not used or disabled.
@@ -48,7 +49,7 @@ namespace UnblockMe.Models
         public string PhotoId { get; set; }
 
         public virtual User Owner { get; set; }
-
+        [NotMapped]
         public virtual CarPhoto Photo { get; set; }
     }
 }
