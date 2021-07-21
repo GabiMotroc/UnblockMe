@@ -2,24 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnblockMe.Models;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
-using UnblockMe.Models;
-using Microsoft.AspNetCore.Authorization;
-using System.Security.Claims;
-using AspNetCoreHero.ToastNotification.Abstractions;
-using Microsoft.Data.SqlClient;
-using UnblockMe.Services;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using Microsoft.EntityFrameworkCore;
 
 namespace UnblockMe.Controllers
 {
@@ -41,6 +27,15 @@ namespace UnblockMe.Controllers
 
             return cars;
         }
+        public async Task<List<Car>> GetCarByPartialPlateAsync(string licencePlate)
+        {
+            var cars = await _context.Car
+                    .Where(a => a.LicencePlate.Contains(licencePlate))
+                    .ToListAsync();
+
+            return cars;
+        }
+
 
         public List<Car> GetFirstNCarsByPartialPlate(string licencePlate, int n)
         {
@@ -50,17 +45,30 @@ namespace UnblockMe.Controllers
                     .ToList();
             return cars;
         }
+        public async Task<List<Car>> GetFirstNCarsByPartialPlateAsync(string licencePlate, int n)
+        {
+            var cars = await _context.Car
+                    .Where(a => a.LicencePlate.Contains(licencePlate))
+                    .Take(n)
+                    .ToListAsync();
+            return cars;
+        }
+
+
         public Car GetCarByPlate(string licencePlate)
         {
             var car = _context.Car
                 .FirstOrDefault(a => a.LicencePlate.Equals(licencePlate));
             return car;
         }
-
-        public Car Find(string text)
+        public async Task<Car> GetCarByPlateAsync(string licencePlate)
         {
-            return null;
+            var car = await _context.Car
+                .FirstOrDefaultAsync(a => a.LicencePlate.Equals(licencePlate));
+            return car;
         }
+
+
         public List<Car> GetCarsOfAnOwner(string owner)
         {
             var cars = _context.Car
@@ -69,13 +77,35 @@ namespace UnblockMe.Controllers
                 .ToList();
             return cars;
         }
+        public async Task<List<Car>> GetCarsOfAnOwnerAsync(string owner)
+        {
+            var cars = await _context.Car
+                .Select(a => a)
+                .Where(b => b.OwnerId == owner)
+                .ToListAsync();
+            return cars;
+        }
+
+
         public void AddCarAndOwner(Car car, string v)
         {
             car.OwnerId = v;
             _context.Car.Add(car);
             _context.SaveChanges();
         }
+        public async Task AddCarAndOwnerAsync(Car car, string v)
+        {
+            car.OwnerId = v;
+            await _context.Car.AddAsync(car);
+            await _context.SaveChangesAsync();
+        }
 
+
+        /// <summary>
+        /// Get the car and it's photo with the given licence plate.
+        /// </summary>
+        /// <param name="plate">The licence plate of the searched car</param>
+        /// <returns>Returns Car object, together with its photography if it has one.</returns>
         public Car GetCarWithPhoto(string plate)
         {
             var car = GetCarByPlate(plate);
@@ -97,6 +127,35 @@ namespace UnblockMe.Controllers
             catch (Exception) { }
             return car;
         }
+
+        /// <summary>
+        /// Asyncronous variant. 
+        /// Get the car and it's photo with the given licence plate. 
+        /// </summary>
+        /// <param name="plate">The licence plate of the searched car</param>
+        /// <returns>Returns Car object, together with its photography if it has one.</returns>
+        public async Task<Car> GetCarWithPhotoAsync(string plate)
+        {
+            var car = await GetCarByPlateAsync(plate);
+            try
+            {
+                if (car != null)
+                {
+                    if (car.Photo != null)
+                    {
+                        return car;
+                    }
+                    if (car.PhotoId != null)
+                    {
+                        car.Photo = await _context.CarPhoto.Where(b => b.PhotoId.Equals(car.PhotoId)).FirstOrDefaultAsync();
+                        return car;
+                    }
+                }
+            }
+            catch (Exception) { }
+            return car;
+        }
+
 
         public void AddPhotoToCar(Car car, IFormFile image)
         {
@@ -132,6 +191,41 @@ namespace UnblockMe.Controllers
                 Console.WriteLine(e);
             }
         }
+        public async Task AddPhotoToCarAsync(Car car, IFormFile image)
+        {
+            try
+            {
+                if (car.PhotoId == null)
+                {
+                    Guid g = Guid.NewGuid();
+
+                    var photo = new CarPhoto
+                    {
+                        PhotoId = g.ToString()//,
+                        //Photo = image
+                    };
+
+                    using (var ms = new MemoryStream())
+                    {
+                        image.CopyTo(ms);
+                        var fileBytes = ms.ToArray();
+                        string s = Convert.ToBase64String(fileBytes);
+                        photo.Photo = s;
+                    }
+                    car.PhotoId = g.ToString();
+                    car.Photo = photo;
+                    _context.Car.Update(car);
+                    await _context.CarPhoto.AddAsync(photo);
+                    await _context.SaveChangesAsync();
+
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+
 
         public void AddCarWithPhoto(Car car, IFormFile image, string owner)
         {
@@ -160,11 +254,46 @@ namespace UnblockMe.Controllers
             }
             catch { }
         }
+        public async Task AddCarWithPhotoAsync(Car car, IFormFile image, string owner)
+        {
+            try
+            {
+                if (car != null && image != null)
+                {
+                    Guid g = Guid.NewGuid();
+                    car.PhotoId = g.ToString();
+                    car.OwnerId = owner;
+                    var carPhoto = car.Photo;
+                    carPhoto.PhotoId = g.ToString();
+
+                    using (var ms = new MemoryStream())
+                    {
+                        image.CopyTo(ms);
+                        var fileBytes = ms.ToArray();
+                        string s = Convert.ToBase64String(fileBytes);
+                        carPhoto.Photo = s;
+                    }
+
+                    _context.Car.Add(car);
+                    _context.CarPhoto.Add(carPhoto);
+                    await _context.SaveChangesAsync();
+                }
+            }
+            catch { }
+        }
+
+
         public void UpdateCar(Car input)
         {
             _context.Car.Update(input);
             _context.SaveChanges();
         }
+        public async Task UpdateCarAsync(Car input)
+        {
+            _context.Car.Update(input);
+            await _context.SaveChangesAsync();
+        }
+
 
         public void UpdateCar(Car input, IFormFile image)
         {
@@ -198,11 +327,51 @@ namespace UnblockMe.Controllers
             }
             catch (Exception) { }
         }
+        public async Task UpdateCarAsync(Car input, IFormFile image)
+        {
+            try
+            {
+                if (input.PhotoId == null && image != null)
+                {
+                    await AddPhotoToCarAsync(input, image);
+                    return;
+                }
+
+                if (image == null)
+                {
+                    await UpdateCarAsync(input);
+                    return;
+                }
+
+                var carPhoto = await _context.CarPhoto
+                    .Where(x => x.PhotoId.Equals(input.PhotoId))
+                    .FirstOrDefaultAsync();
+
+                using (var ms = new MemoryStream())
+                {
+                    image.CopyTo(ms);
+                    var fileBytes = ms.ToArray();
+                    string s = Convert.ToBase64String(fileBytes);
+                    carPhoto.Photo = s;
+                }
+
+                _context.Car.Update(input);
+                _context.CarPhoto.Update(carPhoto);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception) { }
+        }
+
 
         public void RemoveCar(Car input)
         {
             _context.Car.Remove(input);
             _context.SaveChanges();
+        }
+        public async Task RemoveCarAsync(Car input)
+        {
+            _context.Car.Remove(input);
+            await _context.SaveChangesAsync();
         }
     }
 
@@ -219,6 +388,16 @@ namespace UnblockMe.Controllers
         void AddCarWithPhoto(Car car, IFormFile image, string owner);
         public void AddPhotoToCar(Car car, IFormFile image);
         Car GetCarWithPhoto(string plate);
-
+        Task<List<Car>> GetCarByPartialPlateAsync(string licencePlate);
+        Task<List<Car>> GetFirstNCarsByPartialPlateAsync(string licencePlate, int n);
+        Task<Car> GetCarByPlateAsync(string licencePlate);
+        Task<List<Car>> GetCarsOfAnOwnerAsync(string owner);
+        Task AddCarAndOwnerAsync(Car car, string v);
+        Task<Car> GetCarWithPhotoAsync(string plate);
+        Task AddPhotoToCarAsync(Car car, IFormFile image);
+        Task AddCarWithPhotoAsync(Car car, IFormFile image, string owner);
+        Task UpdateCarAsync(Car input);
+        Task UpdateCarAsync(Car input, IFormFile image);
+        Task RemoveCarAsync(Car input);
     }
 }

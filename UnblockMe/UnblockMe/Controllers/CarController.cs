@@ -98,12 +98,12 @@ namespace UnblockMe.Controllers
         }
 
         [HttpPost]
-        public IActionResult SearchCar(Car car)
+        public async Task<IActionResult> SearchCar(Car car)
         {
             var text = car.LicencePlate;
             if (text != null)
             {
-                var Model = _carService.GetCarByPartialPlate(text);
+                var Model = await _carService.GetCarByPartialPlateAsync(text);
                 try
                 {
                     if (Model.Equals(null))
@@ -118,11 +118,11 @@ namespace UnblockMe.Controllers
         }
 
         [HttpGet]
-        public IActionResult SearchCar([FromQuery] string text)
+        public async Task<IActionResult> SearchCar([FromQuery] string text)
         {
             if (text != null)
             {
-                var cars = _carService.GetFirstNCarsByPartialPlate(text, 3);
+                var cars = await _carService.GetFirstNCarsByPartialPlateAsync(text, 3);
                 try
                 {
                     if (!cars.Equals(null))
