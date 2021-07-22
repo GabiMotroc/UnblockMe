@@ -100,12 +100,6 @@ namespace UnblockMe.Controllers
             await _context.SaveChangesAsync();
         }
 
-
-        /// <summary>
-        /// Get the car and it's photo with the given licence plate.
-        /// </summary>
-        /// <param name="plate">The licence plate of the searched car</param>
-        /// <returns>Returns Car object, together with its photography if it has one.</returns>
         public Car GetCarWithPhoto(string plate)
         {
             var car = GetCarByPlate(plate);
@@ -127,13 +121,6 @@ namespace UnblockMe.Controllers
             catch (Exception) { }
             return car;
         }
-
-        /// <summary>
-        /// Asyncronous variant. 
-        /// Get the car and it's photo with the given licence plate. 
-        /// </summary>
-        /// <param name="plate">The licence plate of the searched car</param>
-        /// <returns>Returns Car object, together with its photography if it has one.</returns>
         public async Task<Car> GetCarWithPhotoAsync(string plate)
         {
             var car = await GetCarByPlateAsync(plate);
@@ -387,12 +374,26 @@ namespace UnblockMe.Controllers
         List<Car> GetFirstNCarsByPartialPlate(string licencePlate, int n);
         void AddCarWithPhoto(Car car, IFormFile image, string owner);
         public void AddPhotoToCar(Car car, IFormFile image);
+
+        /// <summary>
+        /// Get the car and it's photo with the given licence plate.
+        /// </summary>
+        /// <param name="plate">The licence plate of the searched car</param>
+        /// <returns>Returns Car object, together with its photography if it has one.</returns>
         Car GetCarWithPhoto(string plate);
+
         Task<List<Car>> GetCarByPartialPlateAsync(string licencePlate);
         Task<List<Car>> GetFirstNCarsByPartialPlateAsync(string licencePlate, int n);
         Task<Car> GetCarByPlateAsync(string licencePlate);
         Task<List<Car>> GetCarsOfAnOwnerAsync(string owner);
         Task AddCarAndOwnerAsync(Car car, string v);
+
+        /// <summary>
+        /// Asyncronous variant. 
+        /// Get the car and it's photo with the given licence plate. 
+        /// </summary>
+        /// <param name="plate">The licence plate of the searched car</param>
+        /// <returns>Returns Car object, together with its photography if it has one.</returns>
         Task<Car> GetCarWithPhotoAsync(string plate);
         Task AddPhotoToCarAsync(Car car, IFormFile image);
         Task AddCarWithPhotoAsync(Car car, IFormFile image, string owner);
