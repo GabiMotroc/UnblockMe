@@ -12,6 +12,7 @@ using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.Data.SqlClient;
 using UnblockMe.Services;
 
+
 namespace UnblockMe.Controllers
 {
     public class CarController : Controller
@@ -34,14 +35,15 @@ namespace UnblockMe.Controllers
             _notyfService = notyfService;
         }
 
-        public IActionResult ViewLicencePlate()
+        public async Task<IActionResult> ViewLicencePlate()
         {
-            return View(_carService
-                .GetCarsOfAnOwner(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+            var car = await _carService
+                .GetCarsOfAnOwnerAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            return View(car);
         }
 
         [Authorize]
-        public IActionResult AddCar(Car item)
+        public async Task<IActionResult> AddCar(Car item)
         {
             try
             {
@@ -50,11 +52,11 @@ namespace UnblockMe.Controllers
                     if (item.Photo != null)
                         if(item.Photo.PhotoFile != null)
                     {
-                        _carService.AddCarWithPhoto(item, item.Photo.PhotoFile, User.FindFirstValue(ClaimTypes.NameIdentifier));
+                        await _carService.AddCarWithPhotoAsync(item, item.Photo.PhotoFile, User.FindFirstValue(ClaimTypes.NameIdentifier));
                         _notyfService.Success("Car succesufuly added.");
                         return View(HomeView);
                     }
-                    _carService.AddCarAndOwner(item, User.FindFirstValue(ClaimTypes.NameIdentifier));
+                    await _carService.AddCarAndOwnerAsync(item, User.FindFirstValue(ClaimTypes.NameIdentifier));
                     _notyfService.Success("Car succesufuly added.");
                     return View(HomeView);
                 }
@@ -76,11 +78,11 @@ namespace UnblockMe.Controllers
         }
 
         [HttpPost]
-        public IActionResult RemoveCar(string text)
+        public async Task<IActionResult> RemoveCar(string text)
         {
             try
             {
-                var car = _carService.GetCarByPlate(text);
+                var car = await _carService.GetCarByPlateAsync(text);
                 if (car.OwnerId == User.FindFirstValue(ClaimTypes.NameIdentifier))
                 {
                     _carService.RemoveCar(car);
@@ -135,11 +137,11 @@ namespace UnblockMe.Controllers
             return View(HomeView, null);
         }
         [HttpGet]
-        public IActionResult EditCar(string text)
+        public async Task<IActionResult> EditCar(string text)
         {
             try
             {
-                var car = _carService.GetCarWithPhoto(text);
+                var car = await _carService.GetCarWithPhotoAsync(text);
                 //var car = _carService.GetCarByPlate(text);
                 if (car.Photo == null)
                     car.Photo = new CarPhoto();
@@ -150,13 +152,16 @@ namespace UnblockMe.Controllers
         }
 
         [HttpPost]
-        public IActionResult EditCar(Car input)
+        public async Task<IActionResult> EditCar(Car input)
         {
             if (input.OwnerId == User.FindFirstValue(ClaimTypes.NameIdentifier))
             {
                 try
                 {
-                    _carService.UpdateCar(input, input.Photo.PhotoFile);
+                    if (input.Photo == null)
+                        await _carService.UpdateCarAsync(input);
+                    else
+                        await _carService.UpdateCarAsync(input, input.Photo.PhotoFile);
                 }
                 catch { }
             }
@@ -167,15 +172,15 @@ namespace UnblockMe.Controllers
             return View(HomeView);
         }
 
-        public IActionResult ViewContact([FromQuery] string text)
+        public async Task<IActionResult> ViewContact([FromQuery] string text)
         {
             Car car = null;
             User user = null;
 
             try
             {
-                car = _carService.GetCarWithPhoto(text);
-                user = _userService.GetOwnerOfACar(car);
+                car = await _carService.GetCarWithPhotoAsync(text);
+                user = await _userService.GetOwnerOfACarAsync(car);
                 var tuple = (car, user);
                 return PartialView("ViewContactPartial", tuple);
             }
@@ -184,10 +189,10 @@ namespace UnblockMe.Controllers
         }
 
 
-        public IActionResult BlockCarPartial(string otherCar)
+        public async Task<IActionResult> BlockCarPartial(string otherCar)
         {
             var plates = new List<string>();
-            var cars = _carService.GetCarsOfAnOwner(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var cars = await _carService.GetCarsOfAnOwnerAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
             foreach (var item in cars)
             {
                 plates.Add(item.LicencePlate);
@@ -197,32 +202,32 @@ namespace UnblockMe.Controllers
         }
 
         [HttpGet]
-        public IActionResult BlockCar(string ownCar, string otherCar)
+        public async Task<IActionResult> BlockCar(string ownCar, string otherCar)
         {
 
-            var OwnCar = _carService.GetCarByPlate(ownCar);
-            var OtherCar = _carService.GetCarByPlate(otherCar);
+            var OwnCar = await _carService.GetCarByPlateAsync(ownCar);
+            var OtherCar = await _carService.GetCarByPlateAsync(otherCar);
             try
             {
                 if (OwnCar == null)
                 {
-                    OwnCar = _carService.GetCarsOfAnOwner(User.FindFirstValue(ClaimTypes.NameIdentifier)).FirstOrDefault(null);
+                    OwnCar = await _carService.GetFirstCarOfOwnerAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
                 }
                 if (OwnCar.OwnerId == User.FindFirstValue(ClaimTypes.NameIdentifier))
                 {
                     if (OtherCar != null)
                     {
                         OwnCar.Blocks = otherCar;
-                        _carService.UpdateCar(OwnCar);
+                        await _carService.UpdateCarAsync(OwnCar);
                         OtherCar.BockedBy = ownCar;
 
-                        _carService.UpdateCar(OtherCar);
+                        await _carService.UpdateCarAsync(OtherCar);
                         _notyfService.Success("Car blocked with success.");
                     }
                     else
                     {
                         OwnCar.Blocks = otherCar;
-                        _carService.UpdateCar(OwnCar);
+                        await _carService.UpdateCarAsync(OwnCar);
                         _notyfService.Warning("The selected car was not found but your status has been updated.");
                     }
                 }
@@ -237,16 +242,17 @@ namespace UnblockMe.Controllers
 
         }
 
+        // not used
         [Route("Car/BlockCar/{otherCar}")]
-        public IActionResult BlockCar(string otherCar)
+        public async Task<IActionResult> BlockCar(string otherCar)
         {
             return View(null);
         }
 
-        public IActionResult UnblockCar(string otherCar)
+        public async Task<IActionResult> UnblockCar(string otherCar)
         {
-            var cars = _carService.GetCarsOfAnOwner(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            var OtherCar = _carService.GetCarByPlate(otherCar);
+            var cars = await _carService.GetCarsOfAnOwnerAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var OtherCar = await _carService.GetCarByPlateAsync(otherCar);
             try
             {
                 if (!cars.Equals(null) && cars.Count() > 0)
@@ -256,14 +262,14 @@ namespace UnblockMe.Controllers
                         if (item.Blocks == otherCar)
                         {
                             item.Blocks = "";
-                            _carService.UpdateCar(item);
+                            await _carService.UpdateCarAsync(item);
                         }
                     }
                 }
                 if (OtherCar.BockedBy == cars.First().LicencePlate)
                 {
                     OtherCar.BockedBy = "";
-                    _carService.UpdateCar(OtherCar);
+                    await _carService.UpdateCarAsync(OtherCar);
                 }
             }
             catch (Exception) { }

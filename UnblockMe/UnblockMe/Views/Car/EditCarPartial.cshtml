@@ -29,11 +29,12 @@
                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                 <input type="hidden" asp-for="LicencePlate" />
                                 <input type="hidden" asp-for="OwnerId" value="@Model?.OwnerId" />
+                                <input type="hidden" asp-for="PhotoId" value="@Model?.PhotoId" />
 
-                                @if(Model.Photo.Photo != null)
-            {
-                <img src="data:image/png;base64,@Model.Photo.Photo" style="max-width:250px" />
-            }
+                                @if (Model.Photo.Photo != null)
+                                {
+                                    <img src="data:image/png;base64,@Model.Photo.Photo" style="max-width:250px" />
+                                }
                                 <div class="form-group">
                                     @Html.LabelFor(x => x.Photo.Photo, new { @class = "box", @placeholder = "Upload photo" })
                                     <input style="float:left; margin-right:20px;" type="file" name="Photo.PhotoFile" id="Photo_PhotoFile" accept=".png,.jpg,.jpeg,.gif,.tif" />

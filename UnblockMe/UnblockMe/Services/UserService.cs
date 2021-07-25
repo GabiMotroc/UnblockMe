@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,10 +22,18 @@ namespace UnblockMe.Services
                     .FirstOrDefault(a => a.Id.Equals(car.OwnerId));
             return user;
         }
+
+        public async Task<User> GetOwnerOfACarAsync(Car car)
+        {
+            var user = await _context.Users
+                    .FirstOrDefaultAsync(a => a.Id.Equals(car.OwnerId));
+            return user;
+        }
     }
 
     public interface IUserService
     {
         public User GetOwnerOfACar(Car car);
+        Task<User> GetOwnerOfACarAsync(Car car);
     }
 }

@@ -6,17 +6,22 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.EntityFrameworkCore;
+using UnblockMe.Services;
+using System.Security.Claims;
 
 namespace UnblockMe.Controllers
 {
+
     public class CarService : ICarService
     {
 
         private readonly UnblockMeContext _context;
+        private readonly IUserService _userService;
 
-        public CarService(UnblockMeContext unblockMeContext)
+        public CarService(UnblockMeContext unblockMeContext, IUserService userService)
         {
             _context = unblockMeContext;
+            _userService = userService;
         }
 
         public List<Car> GetCarByPartialPlate(string licencePlate)
@@ -308,11 +313,16 @@ namespace UnblockMe.Controllers
                     carPhoto.Photo = s;
                 }
 
+                input.Photo = carPhoto;
+
                 _context.Car.Update(input);
                 _context.CarPhoto.Update(carPhoto);
                 _context.SaveChanges();
             }
-            catch (Exception) { }
+            catch (Exception e) 
+            {
+                Console.WriteLine(e);
+            }
         }
         public async Task UpdateCarAsync(Car input, IFormFile image)
         {
@@ -342,6 +352,8 @@ namespace UnblockMe.Controllers
                     carPhoto.Photo = s;
                 }
 
+                input.Photo = carPhoto;
+
                 _context.Car.Update(input);
                 _context.CarPhoto.Update(carPhoto);
                 await _context.SaveChangesAsync();
@@ -359,6 +371,15 @@ namespace UnblockMe.Controllers
         {
             _context.Car.Remove(input);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<Car> GetFirstCarOfOwnerAsync(string owner)
+        {
+            var car = await _context.Car
+                .Select(a => a)
+                .Where(b => b.OwnerId == owner)
+                .FirstOrDefaultAsync();
+            return car;
         }
     }
 
@@ -400,5 +421,6 @@ namespace UnblockMe.Controllers
         Task UpdateCarAsync(Car input);
         Task UpdateCarAsync(Car input, IFormFile image);
         Task RemoveCarAsync(Car input);
+        Task<Car> GetFirstCarOfOwnerAsync(string owner);
     }
 }
