@@ -1277,3 +1277,7 @@ F:\Projects\Git\UnblockMe\UnblockMe\obj\Debug\netcoreapp3.1\Razor\Views\Car\View
 F:\Projects\Git\UnblockMe\UnblockMe\obj\Debug\netcoreapp3.1\Razor\Views\Car\BlockCarPartial.cshtml.g.cs
 C:\Users\motro\Desktop\New folder\UnblockMe\UnblockMe\obj\Debug\netcoreapp3.1\Razor\Views\Car\BlockCarPartial.cshtml.g.cs
 F:\Projects\Git\UnblockMe\UnblockMe\obj\Debug\netcoreapp3.1\Razor\Views\Car\AddCar.cshtml.g.cs
+F:\Projects\Git\UnblockMe\UnblockMe\obj\Debug\netcoreapp3.1\Razor\Views\Administration\CreateRole.cshtml.g.cs
+F:\Projects\Git\UnblockMe\UnblockMe\obj\Debug\netcoreapp3.1\Razor\Views\Administration\ListRoles.cshtml.g.cs
+F:\Projects\Git\UnblockMe\UnblockMe\obj\Debug\netcoreapp3.1\Razor\Views\Administration\EditRole.cshtml.g.cs
+F:\Projects\Git\UnblockMe\UnblockMe\obj\Debug\netcoreapp3.1\Razor\Views\Shared\NotFound.cshtml.g.cs

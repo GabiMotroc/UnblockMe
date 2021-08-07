@@ -35,8 +35,15 @@ namespace UnblockMe
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 
+            //services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)
+            //    .AddEntityFrameworkStores<UnblockMeContext>();
+
             services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<UnblockMeContext>();
+
+            //services.AddIdentity<User, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
+            //    .AddEntityFrameworkStores<UnblockMeContext>();
 
             services.AddTransient<ICarService, CarService>();
             services.AddTransient<IUserService, UserService>();
