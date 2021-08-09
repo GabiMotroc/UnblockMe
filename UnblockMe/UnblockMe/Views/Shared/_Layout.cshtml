@@ -20,15 +20,15 @@
         .c-button {
             background-color: royalblue;
         }
-        .c-button:hover {
-            background: #1d49aa;
-        }
 
-        .c-button:focus {
-            outline: none;
-            box-shadow: 0 0 0 4px #cbd6ee;
-            
-        }
+            .c-button:hover {
+                background: #1d49aa;
+            }
+
+            .c-button:focus {
+                outline: none;
+                box-shadow: 0 0 0 4px #cbd6ee;
+            }
     </style>
 
     <header>
@@ -44,7 +44,7 @@
                         {
                             <li>
                                 <button type="button" class="c-button btn btn-primary" data-toggle="ajax-modal" data-target="#BlockCarPartial"
-                                        data-url="@Url.Action("BlockCarPartial", "Car")" data-id="test" >
+                                        data-url="@Url.Action("BlockCarPartial", "Car")" data-id="test">
                                     Block car
                                 </button>
                             </li>
@@ -58,6 +58,14 @@
                                 <a class="nav-link" asp-area="" asp-controller="Car" asp-action="ViewLicencePlate">View Plates</a>
                             </li>
 
+                            @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Administration" asp-action="ListRoles">
+                                    Manage Roles
+                                    </a>
+                                </li>
+                            }
                         }
                     </ul>
                 </div>
@@ -86,31 +94,5 @@
     @await Component.InvokeAsync("Notyf")
     @RenderSection("Scripts", required: false)
 
-    @*<div class="modal" id="BlockCar" style="width:50%; align-content:center ">
-
-            <div class="moda-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title" id="test">Test label</h4>
-                        <button type="button" class="close" data-dismiss="modal">
-                            <span>X</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <p>...</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" data-save="modal">Save</button>
-
-                    </div>
-                </div>
-            </div>
-        </div>*@
 </body>
 </html>

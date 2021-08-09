@@ -14,7 +14,8 @@ using UnblockMe.Services;
 
 
 namespace UnblockMe.Controllers
-{
+{   
+    [Authorize]
     public class CarController : Controller
     {
         private const string HomeView = "~/Views/Home/Search.cshtml";
