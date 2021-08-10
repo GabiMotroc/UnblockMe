@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace UnblockMe.Controllers
 {
     [Authorize(Roles = "Admin, Premium")]
-    public class Premium : Controller
+    public class PremiumController : Controller
     {
         public IActionResult Index()
         {

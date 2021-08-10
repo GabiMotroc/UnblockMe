@@ -243,13 +243,6 @@ namespace UnblockMe.Controllers
 
         }
 
-        // not used
-        [Route("Car/BlockCar/{otherCar}")]
-        public async Task<IActionResult> BlockCar(string otherCar)
-        {
-            return View(null);
-        }
-
         public async Task<IActionResult> UnblockCar(string otherCar)
         {
             var cars = await _carService.GetCarsOfAnOwnerAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));

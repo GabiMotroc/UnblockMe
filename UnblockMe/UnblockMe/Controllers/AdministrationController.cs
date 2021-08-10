@@ -17,14 +17,15 @@ namespace UnblockMe.Controllers
     public class AdministrationController : Controller
     {
         private readonly INotyfService _notyfService;
+        private readonly UserService _userService;
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
 
-        public AdministrationController(UserManager<User> userManager,
+        public AdministrationController(UserManager<User> userManager, UserService userService,
             INotyfService notyfService, RoleManager<IdentityRole> roleManager)
         {
-
             _notyfService = notyfService;
+            _userService = userService;
             _userManager = userManager;
             _roleManager = roleManager;
         }
@@ -185,7 +186,7 @@ namespace UnblockMe.Controllers
                 {
                     result = await _userManager.AddToRoleAsync(user, role.Name);
                 }
-                else if(!model[i].IsSelected && (await _userManager.IsInRoleAsync(user, role.Name)))
+                else if (!model[i].IsSelected && (await _userManager.IsInRoleAsync(user, role.Name)))
                 {
                     result = await _userManager.RemoveFromRoleAsync(user, role.Name);
                 }
@@ -201,9 +202,9 @@ namespace UnblockMe.Controllers
                     else
                     {
                         _notyfService.Success("List updated succesufully");
-                        return RedirectToAction("EditRole", new { Id = roleId});
+                        return RedirectToAction("EditRole", new { Id = roleId });
                     }
-                        
+
                 }
             }
 
@@ -233,5 +234,21 @@ namespace UnblockMe.Controllers
 
             return RedirectToAction("ListRoles");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> BlockUser(string id, int penalty)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+
+            if(user == null)
+            {
+                ViewBag.ErrorMessage = $"User with id {id} cannot be found.";
+                return View("NotFound");
+            }
+
+
+            return View();
+        }
     }
 }
+ 
