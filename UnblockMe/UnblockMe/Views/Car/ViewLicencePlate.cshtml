@@ -47,6 +47,7 @@
                 <th class="blocked">Is blocked by</th>
                 <th class="blocks">Is blocking</th>
                 <th class="buttons">
+                    <a asp-action="ExportCarsCSV" asp-controller="Car" class="btn btn-primary" style="width:150px">Download Cars</a>
                     <button class="btn btn-link" onclick="location.href = '@Url.Action("AddCar", "Car")'">
                         <i class="fa fa-plus" style="color:lawngreen" aria-hidden="true"></i>
                     </button>

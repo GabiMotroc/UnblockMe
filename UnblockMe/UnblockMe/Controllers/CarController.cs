@@ -11,7 +11,7 @@ using System.Security.Claims;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.Data.SqlClient;
 using UnblockMe.Services;
-
+using System.Text;
 
 namespace UnblockMe.Controllers
 {   
@@ -277,6 +277,19 @@ namespace UnblockMe.Controllers
             return View(HomeView);
         }
 
+        public async Task<IActionResult> ExportCarsCSV()
+        {
+            var builder = new StringBuilder();
+            builder.AppendLine($"licencePlate, maker, model, colour, blockedBy, blocks");
+
+            var cars = await _carService.GetCarsOfAnOwnerAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            foreach (var car in cars)
+            {
+                builder.AppendLine($"{car.LicencePlate}, {car.Maker}, {car.Model}, {car.Colour}, {car.BockedBy}, {car.Blocks}");
+            }
+
+            return File(Encoding.UTF8.GetBytes(builder.ToString()), "text/csv", "CarList.csv");
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
