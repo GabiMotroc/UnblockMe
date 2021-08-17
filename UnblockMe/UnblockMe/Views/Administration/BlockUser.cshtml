@@ -1,0 +1,17 @@
+﻿@model List<UnblockMe.ViewModels.BlockUserViewModel>
+
+@{
+    ViewBag.Title = "BlockUser";
+}
+
+@if (Model.Any())
+{
+    foreach (var user in Model)
+    {
+        
+    }
+}
+else
+{
+    <h3>No users found.</h3>
+}

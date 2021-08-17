@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -20,11 +21,13 @@ namespace UnblockMe.Models
         {
         }
 
-        public virtual DbSet<Car> Car{ get; set; }
+        public virtual DbSet<Car> Car { get; set; }
 
         public virtual DbSet<User> ApplicationUsers { get; set; }
 
         public virtual DbSet<CarPhoto> CarPhoto { get; set; }
+
+        public virtual DbSet<BlockedUser> BlockedUser { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -33,6 +36,11 @@ namespace UnblockMe.Models
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 optionsBuilder.UseSqlServer("Password=test;Persist Security Info=True;User ID=test;Initial Catalog=UnblockMe;Data Source=192.168.0.176, 1433");
             }
+        }
+
+        internal Task AddAsync()
+        {
+            throw new NotImplementedException();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -113,6 +121,30 @@ namespace UnblockMe.Models
                 entity.Property(e => e.Photo)
                     .HasColumnName("photo");
             });
+
+            modelBuilder.Entity<BlockedUser>(entity =>
+            {
+                entity.HasKey(e => e.Id)
+                    .HasName("PK_BlockedUser");
+
+                entity.ToTable("BlockedUser");
+
+                entity.Property(e => e.StartTime)
+                    .HasColumnName("StartTime");
+
+                entity.Property(e => e.Penalty)
+                    .HasColumnName("Penalty");
+
+                entity.Property(e => e.Reason)
+                    .HasColumnName("Reason");
+
+                entity.HasOne(d => d.User)
+                    .WithOne(p => p.BlockedUser)
+                    .HasForeignKey<BlockedUser>(d => d.Id)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Blocked_Users");
+            });
+
             OnModelCreatingPartial(modelBuilder);
         }
 

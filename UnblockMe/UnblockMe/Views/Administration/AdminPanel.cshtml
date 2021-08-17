@@ -1,0 +1,25 @@
+﻿@{
+    ViewBag.Title = "AdminPanel";
+}
+
+<link href="~/lib/own.css" rel="stylesheet" />
+
+@*<ul class="flex-container">
+        <li class="flex-item">
+            <a class="button" asp-controller="Administration" asp-action="ListRoles">
+                List Roles
+            </a>
+        </li>
+        <li class="flex-item"> 2 </li>
+    </ul>*@
+
+
+<div class="flex-container">
+    <a class="flex-item button" asp-controller="Administration" asp-action="ListRoles">
+        Manage Roles
+    </a>
+    
+    <a class="flex-item button" asp-controller="Administration" asp-action="BlockUser">
+        Block Users 
+    </a>
+</div>

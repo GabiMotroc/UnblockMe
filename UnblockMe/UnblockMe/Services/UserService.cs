@@ -29,10 +29,25 @@ namespace UnblockMe.Services
                     .FirstOrDefaultAsync(a => a.Id.Equals(car.OwnerId));
             return user;
         }
+
+        public async Task<string> BlockUser(BlockedUser blockedUser)
+        {
+            try
+            {
+                await _context.AddAsync();
+                await _context.SaveChangesAsync();
+                return null;
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
     }
 
     public interface IUserService
     {
+        Task<string> BlockUser(BlockedUser blockedUser);
         public User GetOwnerOfACar(Car car);
         Task<User> GetOwnerOfACarAsync(Car car);
     }

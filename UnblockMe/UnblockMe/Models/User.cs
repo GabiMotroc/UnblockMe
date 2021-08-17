@@ -21,5 +21,7 @@ namespace UnblockMe.Models
         public string LastName { get; set; }
 
         public virtual ICollection<Car> Car { get; set; }
+
+        public virtual BlockedUser BlockedUser { get; set; }
     }
 }

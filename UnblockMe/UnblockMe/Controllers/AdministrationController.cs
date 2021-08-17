@@ -17,11 +17,11 @@ namespace UnblockMe.Controllers
     public class AdministrationController : Controller
     {
         private readonly INotyfService _notyfService;
-        private readonly UserService _userService;
+        private readonly IUserService _userService;
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
 
-        public AdministrationController(UserManager<User> userManager, UserService userService,
+        public AdministrationController(UserManager<User> userManager, IUserService userService,
             INotyfService notyfService, RoleManager<IdentityRole> roleManager)
         {
             _notyfService = notyfService;
@@ -235,18 +235,33 @@ namespace UnblockMe.Controllers
             return RedirectToAction("ListRoles");
         }
 
-        [HttpGet]
-        public async Task<IActionResult> BlockUser(string id, int penalty)
+        [HttpPost]
+        public async Task<IActionResult> BlockUser(BlockedUser model)
         {
-            var user = await _userManager.FindByIdAsync(id);
+            var user = await _userManager.FindByIdAsync(model.Id);
 
             if(user == null)
             {
-                ViewBag.ErrorMessage = $"User with id {id} cannot be found.";
+                ViewBag.ErrorMessage = $"User with id {model.Id} cannot be found.";
                 return View("NotFound");
             }
 
-             
+            var result = await _userService.BlockUser(model);
+
+            if(result == null)
+            {
+                ViewBag.ErrorMessage = result;
+                return View("NotFound");
+            }
+
+            _notyfService.Success("User succesufully blocked");
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult AdminPanel()
+        {
             return View();
         }
     }
