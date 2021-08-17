@@ -49,7 +49,9 @@ namespace UnblockMe.Services
             var result = await _context.BlockedUser.FirstOrDefaultAsync(a => a.Id.Equals(id));
             if (result == null)
                 return false;
-            if(result.StartTime.AddMilliseconds(result.Penalty) > DateTime.UtcNow)
+            if (result.StartTime != null && result.StopTime == null)
+                return true;
+            if(result.StopTime > DateTime.UtcNow)
                 return true;
 
             return false;

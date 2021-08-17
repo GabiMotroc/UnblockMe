@@ -271,7 +271,7 @@ namespace UnblockMe.Controllers
             }
 
             model.StartTime = DateTime.UtcNow;
-            model.Penalty = 86400000;
+            model.StopTime = DateTime.UtcNow.AddDays(1);
             model.Reason = "ca asa vreau";
 
             var result = await _userService.BlockUser(model);

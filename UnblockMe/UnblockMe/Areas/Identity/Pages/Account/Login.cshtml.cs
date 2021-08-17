@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using UnblockMe.Models;
 using UnblockMe.Services;
+using System.Security.Claims;
 
 namespace UnblockMe.Areas.Identity.Pages.Account
 {
@@ -85,10 +86,16 @@ namespace UnblockMe.Areas.Identity.Pages.Account
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
-
-                var aux = await _userManager.GetUserAsync(HttpContext.User);
+                
+                var aux = await _userManager.FindByEmailAsync(Input.Email);
                 var isBlocked = await _userService.CheckIfBlocked(aux.Id);
 
+                if (isBlocked)
+                {
+                    await _signInManager.SignOutAsync();
+                    _logger.LogWarning("User blocked.");
+                    return RedirectToPage("./Error");
+                }
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
@@ -102,12 +109,6 @@ namespace UnblockMe.Areas.Identity.Pages.Account
                 {
                     _logger.LogWarning("User account locked out.");
                     return RedirectToPage("./Lockout");
-                }
-                if(isBlocked)
-                {
-                    await _signInManager.SignOutAsync();
-                    _logger.LogWarning("User blocked.");
-                    return RedirectToPage("./Error");
                 }
                 else
                 {

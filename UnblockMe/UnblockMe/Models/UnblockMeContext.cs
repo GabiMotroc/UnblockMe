@@ -132,8 +132,8 @@ namespace UnblockMe.Models
                 entity.Property(e => e.StartTime)
                     .HasColumnName("StartTime");
 
-                entity.Property(e => e.Penalty)
-                    .HasColumnName("Penalty");
+                entity.Property(e => e.StopTime)
+                    .HasColumnName("StopTime");
 
                 entity.Property(e => e.Reason)
                     .HasColumnName("Reason");
