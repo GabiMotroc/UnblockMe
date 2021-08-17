@@ -34,7 +34,7 @@ namespace UnblockMe.Services
         {
             try
             {
-                await _context.AddAsync();
+                await _context.AddAsync(blockedUser);
                 await _context.SaveChangesAsync();
                 return null;
             }
@@ -43,11 +43,23 @@ namespace UnblockMe.Services
                 return ex.Message;
             }
         }
+
+        public async Task<bool> CheckIfBlocked(string id)
+        {
+            var result = await _context.BlockedUser.FirstOrDefaultAsync(a => a.Id.Equals(id));
+            if (result == null)
+                return false;
+            if(result.StartTime.AddMilliseconds(result.Penalty) > DateTime.UtcNow)
+                return true;
+
+            return false;
+        }
     }
 
     public interface IUserService
     {
         Task<string> BlockUser(BlockedUser blockedUser);
+        Task<bool> CheckIfBlocked(string id);
         public User GetOwnerOfACar(Car car);
         Task<User> GetOwnerOfACarAsync(Car car);
     }

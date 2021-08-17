@@ -1288,3 +1288,6 @@ C:\Users\motro\Desktop\New folder\UnblockMe\UnblockMe\obj\Debug\netcoreapp3.1\Ra
 C:\Users\motro\Desktop\New folder\UnblockMe\UnblockMe\obj\Debug\netcoreapp3.1\Razor\Views\Administration\ListRoles.cshtml.g.cs
 C:\Users\motro\Desktop\New folder\UnblockMe\UnblockMe\obj\Debug\netcoreapp3.1\Razor\Views\Shared\NotFound.cshtml.g.cs
 C:\Users\motro\Desktop\New folder\UnblockMe\UnblockMe\obj\Debug\netcoreapp3.1\Razor\Views\Administration\AdminPanel.cshtml.g.cs
+F:\Projects\Git\UnblockMe\UnblockMe\obj\Debug\netcoreapp3.1\Razor\Views\Administration\AdminPanel.cshtml.g.cs
+F:\Projects\Git\UnblockMe\UnblockMe\obj\Debug\netcoreapp3.1\Razor\Views\Administration\ListUsers.cshtml.g.cs
+F:\Projects\Git\UnblockMe\UnblockMe\obj\Debug\netcoreapp3.1\Razor\Views\Administration\BlockUser.cshtml.g.cs

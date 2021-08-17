@@ -1,17 +1,18 @@
-﻿@model List<UnblockMe.ViewModels.BlockUserViewModel>
+﻿@model UnblockMe.Models.User
 
-@{
+
+@{ 
     ViewBag.Title = "BlockUser";
 }
 
-@if (Model.Any())
-{
-    foreach (var user in Model)
-    {
-        
-    }
-}
-else
-{
-    <h3>No users found.</h3>
-}
+<ul>
+    <li>@Model.Id</li>
+    <li>@Model.UserName</li>
+    <li>
+        @using (Html.BeginForm("BlockUser", "Administration", FormMethod.Post))
+            {
+                <input type="hidden" name="Id" value="@Model.Id"/>
+                <button type="submit">Block for 1 day</button>
+            }
+    </li>
+</ul>

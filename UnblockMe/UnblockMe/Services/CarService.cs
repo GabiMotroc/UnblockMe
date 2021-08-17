@@ -59,7 +59,7 @@ namespace UnblockMe.Controllers
             return cars;
         }
 
-
+        
         public Car GetCarByPlate(string licencePlate)
         {
             var car = _context.Car

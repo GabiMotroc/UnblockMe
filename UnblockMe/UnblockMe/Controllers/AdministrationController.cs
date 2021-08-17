@@ -235,6 +235,30 @@ namespace UnblockMe.Controllers
             return RedirectToAction("ListRoles");
         }
 
+        [HttpGet]
+        public IActionResult ListUsers()
+        {
+            var users = _userManager.Users.ToList();
+            var model = new List<ListUserViewModel>();
+            foreach (var user in users)
+            {
+                var aux = new ListUserViewModel
+                {
+                    Id = user.Id,
+                    Name = user.UserName
+                } ;
+                model.Add(aux);
+            }
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> BlockUserAsync(string Id)
+        {
+            var model = await _userManager.FindByIdAsync(Id);
+            return View(model);
+        }
+
         [HttpPost]
         public async Task<IActionResult> BlockUser(BlockedUser model)
         {
@@ -246,16 +270,20 @@ namespace UnblockMe.Controllers
                 return View("NotFound");
             }
 
+            model.StartTime = DateTime.UtcNow;
+            model.Penalty = 86400000;
+            model.Reason = "ca asa vreau";
+
             var result = await _userService.BlockUser(model);
 
-            if(result == null)
+            if(result != null)
             {
                 ViewBag.ErrorMessage = result;
                 return View("NotFound");
             }
 
             _notyfService.Success("User succesufully blocked");
-
+            
             return View(model);
         }
 

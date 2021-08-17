@@ -35,9 +35,9 @@ namespace UnblockMe.Controllers
             _logger = logger;
             _notyfService = notyfService;
         }
-
+        
         public async Task<IActionResult> ViewLicencePlate()
-        {
+        { 
             var car = await _carService
                 .GetCarsOfAnOwnerAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
             return View(car);

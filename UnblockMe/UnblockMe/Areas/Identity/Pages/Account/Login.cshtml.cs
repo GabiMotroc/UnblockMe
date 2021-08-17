@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using UnblockMe.Models;
+using UnblockMe.Services;
 
 namespace UnblockMe.Areas.Identity.Pages.Account
 {
@@ -21,14 +22,17 @@ namespace UnblockMe.Areas.Identity.Pages.Account
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly IUserService _userService;
 
         public LoginModel(SignInManager<User> signInManager, 
             ILogger<LoginModel> logger,
-            UserManager<User> userManager)
+            UserManager<User> userManager,
+            IUserService userService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _userService = userService;
         }
 
         [BindProperty]
@@ -81,6 +85,10 @@ namespace UnblockMe.Areas.Identity.Pages.Account
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+
+                var aux = await _userManager.GetUserAsync(HttpContext.User);
+                var isBlocked = await _userService.CheckIfBlocked(aux.Id);
+
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
@@ -94,6 +102,12 @@ namespace UnblockMe.Areas.Identity.Pages.Account
                 {
                     _logger.LogWarning("User account locked out.");
                     return RedirectToPage("./Lockout");
+                }
+                if(isBlocked)
+                {
+                    await _signInManager.SignOutAsync();
+                    _logger.LogWarning("User blocked.");
+                    return RedirectToPage("./Error");
                 }
                 else
                 {

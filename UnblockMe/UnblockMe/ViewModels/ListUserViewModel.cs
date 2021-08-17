@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace UnblockMe.ViewModels
 {
-    public class BlockUserViewModel
+    public class ListUserViewModel
     {
         public string Id { get; set; }
 
