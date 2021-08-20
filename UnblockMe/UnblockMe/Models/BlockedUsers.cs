@@ -7,9 +7,14 @@ using System.Threading.Tasks;
 
 namespace UnblockMe.Models
 {
-    public class BlockedUser
+    public class BlockedUsers
     {
-        public string Id { get; set; }
+        //public BlockedUsers()
+        //{
+        //    Id = new Guid();
+        //}
+        public Guid Id { get; set; }
+        public string BlockedId { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime StopTime { get; set; }
         public string Reason { get; set; }

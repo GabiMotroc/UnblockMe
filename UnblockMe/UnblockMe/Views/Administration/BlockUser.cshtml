@@ -1,18 +1,227 @@
-﻿@model UnblockMe.Models.User
+﻿@model UnblockMe.Models.BlockUserViewModel
 
 
-@{ 
+@{
     ViewBag.Title = "BlockUser";
 }
 
 <ul>
-    <li>@Model.Id</li>
-    <li>@Model.UserName</li>
+    <li>@Model.Email</li>
+    <li>@Model.Username</li>
     <li>
         @using (Html.BeginForm("BlockUser", "Administration", FormMethod.Post))
-            {
-                <input type="hidden" name="Id" value="@Model.Id"/>
-                <button type="submit">Block for 1 day</button>
-            }
+        {
+            <input type="hidden" name="BlockedId" value="@Model.UserId" />
+            <button type="submit">Block for 1 day</button>
+        }
     </li>
 </ul>
+
+@if (Model.Bans.Any())
+{
+    <h3>Previous Bans</h3>
+    foreach (var ban in Model.Bans)
+    {
+        @ban.StartTime
+    }
+}
+<style>
+        #mydiv {
+            position: absolute;
+            z-index: 9;
+            background-color: #f1f1f1;
+            text-align: center;
+            border: 1px solid #d3d3d3;
+        }
+
+        #mydivheader {
+            padding: 10px;
+            cursor: move;
+            z-index: 10;
+            background-color: #2196F3;
+            color: #fff;
+        }
+
+        .radialTimePicker {
+            width: 400px;
+            height: 400px;
+            min-width: 400px;
+            min-height: 400px;
+        }
+
+        .dot {
+            top: 0px;
+            left: calc(50% - 10px);
+            height: 25px;
+            width: 25px;
+            background-color: #ff0000;
+            border-radius: 50%;
+            transform-origin: 50% 20px;
+        }
+
+        #radialTimePicker {
+            left: calc(50% - 200px);
+            width: 400px;
+            height: 400px;
+            min-width: 400px;
+            min-height: 400px;
+            position: relative;
+            background: green;
+        }
+
+        .knob {
+            width: 25px;
+            height: 200px;
+            margin: 0 auto;
+            position: relative;
+            background: blue;
+            transform-origin: 50% 100%;
+            transform: rotate(0deg);
+        }
+
+        .dot {
+            top: 0px;
+            left: calc(50% - 10px);
+            height: 25px;
+            width: 25px;
+            background-color: #ff0000;
+            border-radius: 50%;
+            display: inline-block;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .kno:hover {
+            transform: rotate(360deg);
+            animation: custom-flip 1s ease-in-out infinite alternate;
+        }
+    @@keyframes custom-flip
+        {
+            50% {
+                transform: rotate(360deg);
+            }
+            100% {
+                transform: rotate(0deg);
+            }
+        }
+</style>
+
+<div id="radialTimePicker">
+    <div id="knob" class="knob">
+        <span class="dot"></span>
+    </div>
+</div>
+
+@*<div id="mydiv">
+    <div id="mydivheader">Click here to move</div>
+    <p>Move</p>
+    <p>this</p>
+    <p>DIV</p>
+</div>*@
+
+<script src="~/js/radialTmePicker.js"></script>
+
+<script>
+    //Make the DIV element draggagle:
+    dragElement(document.getElementById("mydiv"));
+
+
+    function dragElement(elmnt) {
+        var size = 150;
+        var centerX = elmnt.offsetLeft, centerY = elmnt.offsetTop;
+        var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+
+        if (document.getElementById(elmnt.id + "header")) {
+            /* if present, the header is where you move the DIV from:*/
+            document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+        } else {
+            /* otherwise, move the DIV from anywhere inside the DIV:*/
+            elmnt.onmousedown = dragMouseDown;
+        }
+
+        function dragMouseDown(e) {
+            e = e || window.event;
+            e.preventDefault();
+            // get the mouse cursor position at startup:
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            document.onmouseup = closeDragElement;
+            // call a function whenever the cursor moves:
+            document.onmousemove = elementDrag;
+        }
+
+        function elementDrag(e) {
+            e = e || window.event;
+            e.preventDefault();
+            // calculate the new cursor position:
+            pos1 = pos3 - e.clientX;
+            pos2 = pos4 - e.clientY;
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            // set the element's new position:
+            //elmnt.style.top = clampY((elmnt.offsetTop - pos2)) + "px";
+            //elmnt.style.left = clampX((elmnt.offsetLeft - pos1)) + "px";
+            let coordinates = calculatePos(pos3 - centerX, pos4 - centerY, size);
+
+            elmnt.style.left = coordinates[0] + centerX + "px";
+            elmnt.style.top = coordinates[1] + centerY + "px";
+        }
+
+        function closeDragElement() {
+            /* stop moving when mouse button is released:*/
+            document.onmouseup = null;
+            document.onmousemove = null;
+        }
+
+        function clampX(e) {
+            if (e > centerX + 500)
+                return centerX + 500;
+            if (e < centreX - 500)
+                return centerX - 500;
+            return e;
+        }
+
+        function clampY(e) {
+            if (e > centreY + 500)
+                return centerY + 500;
+            if (e < centerY - 500)
+                return centerY - 500;
+            return e;
+        }
+
+        function clamp(e, limit) {
+            if (e > centerY + limit)
+                return centerY + limit;
+            if (e < centerY - limit)
+                return centerY - limit;
+            return e;
+        }
+
+        function calculatePos(x, y, size) {
+            var cos = cosOf2Vectors(x, y, 1, 0);
+            var sin = Math.sqrt(1 - cos * cos);
+
+            if ((x - centerX > 0) && (y - centerY < 0)) {
+                sin -= sin;
+            }
+
+            if ((x - centerX < 0) && (y - centerY < 0)) {
+                sin -= sin;
+            }
+
+            return [cos * size, sin * size];
+        }
+
+        function cosOf2Vectors(x1, y1, x2, y2) {
+            return dotProduct(x1, y1, x2, y2) / magnitude(x1, y1) * magnitude(x2, y2);
+        }
+
+        function dotProduct(x1, y1, x2, y2) {
+            return x1 * x2 + y1 * y2;
+        }
+
+        function magnitude(x, y) {
+            return Math.sqrt(x * x + y * y);
+        }
+    }
+</script>

@@ -88,7 +88,7 @@ namespace UnblockMe.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 
                 var aux = await _userManager.FindByEmailAsync(Input.Email);
-                var isBlocked = await _userService.CheckIfBlocked(aux.Id);
+                var isBlocked = await _userService.CheckIfBlockedAsync(aux.Id);
 
                 if (isBlocked)
                 {

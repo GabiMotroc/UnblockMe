@@ -27,7 +27,7 @@ namespace UnblockMe.Models
 
         public virtual DbSet<CarPhoto> CarPhoto { get; set; }
 
-        public virtual DbSet<BlockedUser> BlockedUser { get; set; }
+        public virtual DbSet<BlockedUsers> BlockedUsers { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -122,12 +122,15 @@ namespace UnblockMe.Models
                     .HasColumnName("photo");
             });
 
-            modelBuilder.Entity<BlockedUser>(entity =>
+            modelBuilder.Entity<BlockedUsers>(entity =>
             {
                 entity.HasKey(e => e.Id)
-                    .HasName("PK_BlockedUser");
+                    .HasName("PK_BlockedUsers");
 
-                entity.ToTable("BlockedUser");
+                entity.ToTable("BlockedUsers");
+
+                entity.Property(e => e.BlockedId)
+                    .HasColumnName("BlockedId");
 
                 entity.Property(e => e.StartTime)
                     .HasColumnName("StartTime");
@@ -140,9 +143,9 @@ namespace UnblockMe.Models
 
                 entity.HasOne(d => d.User)
                     .WithOne(p => p.BlockedUser)
-                    .HasForeignKey<BlockedUser>(d => d.Id)
+                    .HasForeignKey<BlockedUsers>(d => d.BlockedId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Blocked_Users");
+                    .HasConstraintName("FK_BlockedUsers");
             });
 
             OnModelCreatingPartial(modelBuilder);

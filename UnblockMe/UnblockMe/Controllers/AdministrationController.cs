@@ -246,7 +246,7 @@ namespace UnblockMe.Controllers
                 {
                     Id = user.Id,
                     Name = user.UserName
-                } ;
+                };
                 model.Add(aux);
             }
             return View(model);
@@ -255,35 +255,53 @@ namespace UnblockMe.Controllers
         [HttpGet]
         public async Task<IActionResult> BlockUserAsync(string Id)
         {
-            var model = await _userManager.FindByIdAsync(Id);
+            var model = new BlockUserViewModel();
+
+            var user = await _userManager.FindByIdAsync(Id);
+            model.UserId = Id;
+            model.Username = user.UserName;
+            model.Email = user.Email;
+
+            var Bans = await _userService.GetAllBansOfUser(Id);
+
+            foreach (var ban in Bans)
+            {
+                model.Bans.Add(ban);
+            }
+
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> BlockUser(BlockedUser model)
+        public async Task<IActionResult> BlockUser(BlockUserViewModel model)
         {
-            var user = await _userManager.FindByIdAsync(model.Id);
+            var user = await _userManager.FindByIdAsync(model.UserId);
 
-            if(user == null)
+            if (user == null)
             {
-                ViewBag.ErrorMessage = $"User with id {model.Id} cannot be found.";
+                ViewBag.ErrorMessage = $"User with id {model.UserId} cannot be found.";
                 return View("NotFound");
             }
 
-            model.StartTime = DateTime.UtcNow;
-            model.StopTime = DateTime.UtcNow.AddDays(1);
-            model.Reason = "ca asa vreau";
+            var Ban = new BlockedUsers
+            {
+                // just fo test needs to be edited
+                StartTime = DateTime.UtcNow,
+                StopTime = DateTime.UtcNow.AddDays(1),
+                Reason = "ca asa vreau",
+                // end of test
+            };
 
-            var result = await _userService.BlockUser(model);
+            var result = await _userService.BlockUserAsync(Ban);
 
-            if(result != null)
+            if (result != null)
             {
                 ViewBag.ErrorMessage = result;
                 return View("NotFound");
             }
 
             _notyfService.Success("User succesufully blocked");
-            
+
             return View(model);
         }
 
@@ -294,4 +312,3 @@ namespace UnblockMe.Controllers
         }
     }
 }
- 

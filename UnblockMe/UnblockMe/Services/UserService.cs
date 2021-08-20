@@ -30,8 +30,11 @@ namespace UnblockMe.Services
             return user;
         }
 
-        public async Task<string> BlockUser(BlockedUser blockedUser)
+        public async Task<string> BlockUserAsync(BlockedUsers blockedUser)
         {
+            if (blockedUser.Id == null)
+                blockedUser.Id = new Guid();
+
             try
             {
                 await _context.AddAsync(blockedUser);
@@ -44,24 +47,51 @@ namespace UnblockMe.Services
             }
         }
 
-        public async Task<bool> CheckIfBlocked(string id)
+        public async Task<bool> CheckIfBlockedAsync(string id)
         {
-            var result = await _context.BlockedUser.FirstOrDefaultAsync(a => a.Id.Equals(id));
-            if (result == null)
+            var result = await _context.BlockedUsers
+                                    .Where(a => a.BlockedId.Contains(id))
+                                    .ToListAsync();
+
+            if(result == null)
                 return false;
-            if (result.StartTime != null && result.StopTime == null)
+
+            if (!result.Any())
+                return false;
+
+            var latestBan = result.First();
+
+            foreach (var user in result)
+            {
+                if (user.StartTime > latestBan.StartTime)
+                    latestBan = user;
+                
+            }
+
+            if (latestBan == null)
+                return false;
+            if (latestBan.StartTime != null && latestBan.StopTime == null)
                 return true;
-            if(result.StopTime > DateTime.UtcNow)
+            if (latestBan.StopTime > DateTime.UtcNow)
                 return true;
 
             return false;
+        }
+
+        public async Task<List<BlockedUsers>> GetAllBansOfUser(string id)
+        {
+            var result = await _context.BlockedUsers
+                                    .Where(a => a.BlockedId.Contains(id))
+                                    .ToListAsync();
+            return result;
         }
     }
 
     public interface IUserService
     {
-        Task<string> BlockUser(BlockedUser blockedUser);
-        Task<bool> CheckIfBlocked(string id);
+        Task<string> BlockUserAsync(BlockedUsers blockedUser);
+        Task<bool> CheckIfBlockedAsync(string id);
+        Task<List<BlockedUsers>> GetAllBansOfUser(string id);
         public User GetOwnerOfACar(Car car);
         Task<User> GetOwnerOfACarAsync(Car car);
     }

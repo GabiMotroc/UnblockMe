@@ -22,6 +22,6 @@ namespace UnblockMe.Models
 
         public virtual ICollection<Car> Car { get; set; }
 
-        public virtual BlockedUser BlockedUser { get; set; }
+        public virtual BlockedUsers BlockedUser { get; set; }
     }
 }
