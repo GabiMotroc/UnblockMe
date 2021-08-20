@@ -7,20 +7,47 @@
         });
 
         this.knobElm.addEventListener("mousemove", e => {
-            this.onMove(e.clientX, e.clientY);
+            if (e.which == 1)
+                this.onMove(e.clientX, e.clientY);
+            else if (!this.isDragging)
+                this.onRelease()
         });
+
+        window.addEventListener('mouseup', this.onRelease.bind(this));
 
         /*this.knobElm.addEventListener("mouseup", e => {
             this.onRelease(e);
         });*/
 
+        this.calculatePositions();
+        window.addEventListener('resize', this.calculatePositions.bind(this));
+
         this.currentAngle = 0;
         this.lastAngle = 0;
         this.lastAngles = [0, 0, 0];
         this.start = {
-            x: this.knobElm.offsetWidth,
-            y: this.knobElm.offsetHeight,
+            x: null,
+            y: null,
         };
+
+        this.positionCallbacks = [];
+    }
+
+    calculatePositions() {
+        this.wheelWidth = this.knobElm.getBoundingClientRect()['width'];
+        this.wheelHeight = this.knobElm.getBoundingClientRect()['height']
+        this.wheelX = this.knobElm.getBoundingClientRect()['x'] + this.wheelWidth / 2;
+        this.wheelY = this.knobElm.getBoundingClientRect()['y'] + this.wheelHeight / 2;
+    }
+
+    onPositionChange(callback) {
+        this.positionCallbacks.push(callback);
+    }
+
+    onRelease() {
+
+        this.oldAngle = this.currentAngle;
+
     }
 
     onGrab(x, y) {
@@ -45,7 +72,10 @@
     }
 
     calculateAngleDegrees(x, y) {
-        return Math.atan2(x, y) * 180 / Math.PI;
+        let xLength = x - this.wheelX;
+        let yLength = y - this.wheelY;
+        let angle = Math.atan2(xLength, yLength) * (180 / Math.PI);
+        return 365 - angle;
     }
 
 }
