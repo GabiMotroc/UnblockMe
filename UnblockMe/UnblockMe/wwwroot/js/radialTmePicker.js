@@ -37,7 +37,7 @@
         this.wheelWidth = this.knobElm.getBoundingClientRect()['width'];
         this.wheelHeight = this.knobElm.getBoundingClientRect()['height']
         this.wheelX = this.knobElm.getBoundingClientRect()['x'] + this.wheelWidth / 2;
-        this.wheelY = this.knobElm.getBoundingClientRect()['y'] + this.wheelHeight / 2;
+        this.wheelY = this.knobElm.getBoundingClientRect()['y'] + this.wheelHeight;
     }
 
     onPositionChange(callback) {
