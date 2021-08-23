@@ -79,12 +79,14 @@
 
         this.lastAngle = this.currentAngle;
     }
+
     onRelease() {
         if (this.isDragging) {
             this.isDragging = false;
             this.oldAngle = this.currentAngle;
         }
     }
+
     calculateAngle(currentX, currentY) {
         let xLength = currentX - this.wheelX;
         let yLength = currentY - this.wheelY;
@@ -93,12 +95,23 @@
         return 360 - angle;
     }
 
-
+    calculateTime(deg) {
+        if (deg <= 0.01)
+            return "No ban";
+        if (deg >= 359.99)
+            return "Permanent";
+        if (deg > 0.01 && deg <= 120)
+            return parseInt(deg / 5 + 1) + " hours";
+        if (deg > 120 && deg < 240)
+            return parseInt((deg - 120 ) / 4 + 1) + " days";
+        if (deg >= 240)
+            return parseInt((deg - 240) / 10 + 1) + " months";
+    }
 
     render(deg) {
         this.wheelElm.style.transform = `rotate(${deg % 360}deg)`;
         this.iconElm.style.transform = `rotate(${360 - deg}deg`;
-        this.displayElm
+        this.displayElm.innerHTML = this.calculateTime(deg);
     }
 
 }

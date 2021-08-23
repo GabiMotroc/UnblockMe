@@ -5,26 +5,7 @@
     ViewBag.Title = "BlockUser";
 }
 
-<ul>
-    <li>@Model.Email</li>
-    <li>@Model.Username</li>
-    <li>
-        @using (Html.BeginForm("BlockUser", "Administration", FormMethod.Post))
-        {
-            <input type="hidden" name="BlockedId" value="@Model.UserId" />
-            <button type="submit">Block for 1 day</button>
-        }
-    </li>
-</ul>
 
-@if (Model.Bans.Any())
-{
-    <h3>Previous Bans</h3>
-    foreach (var ban in Model.Bans)
-    {
-        @ban.StartTime
-    }
-}
 <style>
     #mydiv {
         position: absolute;
@@ -91,8 +72,8 @@
         pointer-events: none;
     }
 
-    .rev-rotate{
-
+    #display {
+        text-align: center;
     }
 
     .kno:hover {
@@ -108,8 +89,21 @@
         100% {
             transform: rotate(0deg);
         }
-    }   
+    }
 </style>
+<ul>
+    <li>@Model.Email</li>
+    <li>@Model.Username</li>
+    <li>
+        @using (Html.BeginForm("BlockUser", "Administration", FormMethod.Post))
+        {
+            <input type="hidden" name="BlockedId" value="@Model.UserId" />
+            <button type="submit">Block for 1 day</button>
+        }
+    </li>
+</ul>
+
+
 
 <div id="radialTimePicker">
     <div id="wheel" class="knob">
@@ -118,7 +112,17 @@
             <path d="M11.354 4.646a.5.5 0 0 0-.708 0l-6 6a.5.5 0 0 0 .708.708l6-6a.5.5 0 0 0 0-.708z" />
         </svg>
     </div>
+    <h3 id="display">No Ban</h3>
 </div>
+
+@if (Model.Bans.Any())
+{
+    <h3>Previous Bans</h3>
+    foreach (var ban in Model.Bans)
+    {
+        @ban.StartTime
+    }
+}
 
 @*<div id="mydiv">
         <div id="mydivheader">Click here to move</div>
