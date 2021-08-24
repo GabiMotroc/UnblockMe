@@ -1,4 +1,4 @@
-﻿@model UnblockMe.Models.BlockUserViewModel
+﻿@model UnblockMe.ViewModels.BlockUserViewModel
 
 
 @{
@@ -72,8 +72,19 @@
         pointer-events: none;
     }
 
-    #display {
+    .display {
+        width: 100px;
         text-align: center;
+        font-size: 18.72px;
+        font-weight: bolder;
+        position: relative;
+        color: black;
+
+    }
+
+    .dislay:hover {
+        transform: scale(1.2);
+        font-size: 22px;
     }
 
     .kno:hover {
@@ -90,19 +101,21 @@
             transform: rotate(0deg);
         }
     }
-</style>
-<ul>
-    <li>@Model.Email</li>
-    <li>@Model.Username</li>
-    <li>
-        @using (Html.BeginForm("BlockUser", "Administration", FormMethod.Post))
-        {
-            <input type="hidden" name="BlockedId" value="@Model.UserId" />
-            <button type="submit">Block for 1 day</button>
-        }
-    </li>
-</ul>
 
+    .btn-circle.btn-sm {
+        width: 120px;
+        height: 120px;
+        padding: 6px 0px;
+        border-radius: 60px;
+        font-size: 24px;
+        text-align: center;
+    }
+</style>
+
+<ul>
+    <li>@Model.UserId</li>
+    <li>@Model.Username</li>
+</ul>
 
 
 <div id="radialTimePicker">
@@ -112,7 +125,18 @@
             <path d="M11.354 4.646a.5.5 0 0 0-.708 0l-6 6a.5.5 0 0 0 .708.708l6-6a.5.5 0 0 0 0-.708z" />
         </svg>
     </div>
-    <h3 id="display">No Ban</h3>
+    <div style="margin-left: 140px; margin-top: -60px">
+        @using (Html.BeginForm("BlockUser", "Administration", FormMethod.Post))
+        {
+            <input type="hidden" name="UserId" value="@Model.UserId" />
+            <input id="durationSubmit" type="hidden" name="Duration" value="none" />
+            <button id="display" type="submit" class="btn btn-primary btn-circle btn-sm">No Ban</button>
+        }
+    </div>
+</div>
+
+<div style="width:120px; position:relative">
+   
 </div>
 
 @if (Model.Bans.Any())
@@ -120,7 +144,7 @@
     <h3>Previous Bans</h3>
     foreach (var ban in Model.Bans)
     {
-        @ban.StartTime
+        <p>@ban.StartTime until @ban.StopTime</p>
     }
 }
 
@@ -132,6 +156,7 @@
     </div>*@
 
 <script src="~/js/radialTmePicker.js"></script>
+<link href="~/lib/own.css" rel="stylesheet" />
 
 <script>
     //Make the DIV element draggagle:

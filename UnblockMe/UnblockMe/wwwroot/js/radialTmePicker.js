@@ -3,6 +3,7 @@
         this.wheelElm = document.getElementById('wheel');
         this.iconElm = document.getElementById('icon');
         this.displayElm = document.getElementById('display');
+        this.formPostElm = document.getElementById('durationSubmit');
 
         this.wheelElm.addEventListener('mousedown', e => {
             this.onGrab(e.clientX, e.clientY);
@@ -73,7 +74,7 @@
         if (this.lastAngle < 30 && this.currentAngle > 180)
             this.currentAngle = 0.01;
 
-        console.log(deltaAngle);
+        //console.log(deltaAngle);
 
         this.render(this.currentAngle);
 
@@ -97,7 +98,7 @@
 
     calculateTime(deg) {
         if (deg <= 0.01)
-            return "No ban";
+            return "No Ban";
         if (deg >= 359.99)
             return "Permanent";
         if (deg > 0.01 && deg <= 120)
@@ -112,6 +113,7 @@
         this.wheelElm.style.transform = `rotate(${deg % 360}deg)`;
         this.iconElm.style.transform = `rotate(${360 - deg}deg`;
         this.displayElm.innerHTML = this.calculateTime(deg);
+        this.formPostElm.value = this.calculateTime(deg);
     }
 
 }

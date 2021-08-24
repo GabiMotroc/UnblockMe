@@ -273,9 +273,26 @@ namespace UnblockMe.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> BlockUser(BlockUserViewModel model)
+        public async Task<IActionResult> BlockUserAsync(BlockUserViewModel model)
         {
             var user = await _userManager.FindByIdAsync(model.UserId);
+            /*  0 = no ban
+             *  1 = hours
+             *  2 = days
+             *  3 = months
+             *  4 = permanent
+             *  5 = invalid
+             */
+            int type = 0, duration = -1;
+
+            var Ban = new BlockedUsers
+            {
+                // just fo test needs to be edited
+                BlockedId = model.UserId,
+                StartTime = DateTime.UtcNow,
+                Reason = "ca asa vreau",
+                // end of test
+            };
 
             if (user == null)
             {
@@ -283,14 +300,58 @@ namespace UnblockMe.Controllers
                 return View("NotFound");
             }
 
-            var Ban = new BlockedUsers
+            if (model.Duration == null)
             {
-                // just fo test needs to be edited
-                StartTime = DateTime.UtcNow,
-                StopTime = DateTime.UtcNow.AddDays(1),
-                Reason = "ca asa vreau",
-                // end of test
-            };
+                ViewBag.ErrorMessage = $"Invalid format";
+                return View("NotFound");
+            }
+
+            if (model.Duration.Contains("No"))
+                type = 0;
+            else if (model.Duration.Contains("ours"))
+                type = 1;
+            else if (model.Duration.Contains("ays"))
+                type = 2;
+            else if (model.Duration.Contains("onths"))
+                type = 3;
+            else if (model.Duration.Contains("ermanent"))
+                type = 4;
+            else
+                type = 5;
+
+            string aux = model.Duration.Substring(0, 1);
+
+            if (type > 0 && type < 4)
+                if (Int32.TryParse(aux, out int numValue))
+                {
+                    duration = numValue;
+                }
+                else
+                {
+                    ViewBag.ErrorMessage = $"Int32.TryParse could not parse '{model.Duration}' to an int.";
+                    return View("NotFound");
+                }
+
+            switch (type)
+            {
+                case 0:
+                    Ban.StopTime = DateTime.UtcNow;
+                    break;
+                case 1:
+                    Ban.StopTime = DateTime.UtcNow.AddHours(duration);
+                    break;
+                case 2:
+                    Ban.StopTime = DateTime.UtcNow.AddDays(duration);
+                    break;
+                case 3:
+                    Ban.StopTime = DateTime.UtcNow.AddMonths(duration);
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    ViewBag.ErrorMessage = $"Invalid format";
+                    return View("NotFound");
+            }
 
             var result = await _userService.BlockUserAsync(Ban);
 
@@ -302,7 +363,7 @@ namespace UnblockMe.Controllers
 
             _notyfService.Success("User succesufully blocked");
 
-            return View(model);
+            return View("AdminPanel");
         }
 
         [HttpGet]
