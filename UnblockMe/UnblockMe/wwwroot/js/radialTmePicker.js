@@ -96,7 +96,7 @@
         return 360 - angle;
     }
 
-    calculateTime(deg) {
+    calculateTimeToString(deg) {
         if (deg <= 0.01)
             return "No Ban";
         if (deg >= 359.99)
@@ -112,8 +112,8 @@
     render(deg) {
         this.wheelElm.style.transform = `rotate(${deg % 360}deg)`;
         this.iconElm.style.transform = `rotate(${360 - deg}deg`;
-        this.displayElm.innerHTML = this.calculateTime(deg);
-        this.formPostElm.value = this.calculateTime(deg);
+        this.displayElm.innerHTML = this.calculateTimeToString(deg);
+        this.formPostElm.value = this.calculateTimeToString(deg);
     }
 
 }

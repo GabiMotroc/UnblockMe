@@ -9021,19 +9021,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\abi\\.nuget\\packages\\": {}
+    "C:\\Users\\motro\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "F:\\Projects\\Git\\UnblockMe\\UnblockMe\\UnblockMe.csproj",
+      "projectUniqueName": "C:\\Users\\motro\\Desktop\\New folder\\UnblockMe\\UnblockMe\\UnblockMe.csproj",
       "projectName": "UnblockMe",
-      "projectPath": "F:\\Projects\\Git\\UnblockMe\\UnblockMe\\UnblockMe.csproj",
-      "packagesPath": "C:\\Users\\abi\\.nuget\\packages\\",
-      "outputPath": "F:\\Projects\\Git\\UnblockMe\\UnblockMe\\obj\\",
+      "projectPath": "C:\\Users\\motro\\Desktop\\New folder\\UnblockMe\\UnblockMe\\UnblockMe.csproj",
+      "packagesPath": "C:\\Users\\motro\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\motro\\Desktop\\New folder\\UnblockMe\\UnblockMe\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\abi\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\motro\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -9110,7 +9110,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.301\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
       }
     }
   }
