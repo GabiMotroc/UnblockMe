@@ -85,6 +85,14 @@ namespace UnblockMe.Services
                                     .ToListAsync();
             return result;
         }
+
+        public async Task<List<UserActivity>> GetUserActivitiesByUserName(string userName)
+        {
+            var result = await _context.UserActivities
+                                    .Where(a => a.UserName.Equals(userName))
+                                    .ToListAsync();
+            return result;
+        }
     }
 
     public interface IUserService
@@ -94,5 +102,6 @@ namespace UnblockMe.Services
         Task<List<BlockedUsers>> GetAllBansOfUser(string id);
         public User GetOwnerOfACar(Car car);
         Task<User> GetOwnerOfACarAsync(Car car);
+        Task<List<UserActivity>> GetUserActivitiesByUserName(string userName);
     }
 }

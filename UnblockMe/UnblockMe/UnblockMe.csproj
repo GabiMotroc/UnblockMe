@@ -57,6 +57,7 @@
   <ItemGroup>
     <Folder Include="Areas\Identity\Pages\Cars\" />
     <Folder Include="Data\Migrations\" />
+    <Folder Include="not sure yet\" />
   </ItemGroup>
 
   <ItemGroup>

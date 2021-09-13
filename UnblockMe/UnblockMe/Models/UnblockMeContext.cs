@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using UnblockMe.Services;
 
 // Code scaffolded by EF Core assumes nullable reference types (NRTs) are not used or disabled.
 // If you have enabled NRTs for your project, then un-comment the following line:
@@ -28,6 +29,10 @@ namespace UnblockMe.Models
         public virtual DbSet<CarPhoto> CarPhoto { get; set; }
 
         public virtual DbSet<BlockedUsers> BlockedUsers { get; set; }
+
+        public virtual DbSet<Audit> AuditRecords { get; set; }
+
+        public virtual DbSet<UserActivity> UserActivities { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -146,6 +151,51 @@ namespace UnblockMe.Models
                     .HasForeignKey<BlockedUsers>(d => d.BlockedId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_BlockedUsers");
+            });
+
+            modelBuilder.Entity<Audit>(entity =>
+            {
+                entity.HasKey(e => e.AuditID)
+                    .HasName("PK_Audit");
+
+                entity.ToTable("Audit");
+
+                entity.Property(e => e.UserName)
+                    .HasColumnName("UserName");
+
+                entity.Property(e => e.IPAddress)
+                    .HasColumnName("IPAdress");
+
+                entity.Property(e => e.AreaAccessed)
+                    .HasColumnName("AreaAccessed");
+
+                entity.Property(e => e.TimeAccessed)
+                    .HasColumnName("TimeAccessed");
+
+            });
+
+            modelBuilder.Entity<UserActivity>(entity =>
+            {
+                entity.HasKey(e => e.Id)
+                    .HasName("PK_UserActivities");
+
+                entity.ToTable("UserActivities");
+
+                entity.Property(e => e.Url)
+                    .HasColumnName("Url");
+
+                entity.Property(e => e.Data)
+                    .HasColumnName("Data");
+
+                entity.Property(e => e.UserName)
+                    .HasColumnName("UserName");
+
+                entity.Property(e => e.IpAddress)
+                    .HasColumnName("IpAddress");
+
+                entity.Property(e => e.ActivityTime)
+                    .HasColumnName("ActivityTime");
+
             });
 
             OnModelCreatingPartial(modelBuilder);

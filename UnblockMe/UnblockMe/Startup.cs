@@ -13,8 +13,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UnblockMe.Controllers;
+using UnblockMe.Filter;
 //using UnblockMe.Data;
 using UnblockMe.Models;
+
 using UnblockMe.Services;
 
 namespace UnblockMe
@@ -47,24 +49,28 @@ namespace UnblockMe
 
             services.AddTransient<ICarService, CarService>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<AuditingContext>();
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews(config =>
+            {
+                config.Filters.Add(typeof(UserActivityFilter));
+            });
             services.AddRazorPages();
 
-            services.AddNotyf(config => 
+            services.AddNotyf(config =>
             {
                 config.DurationInSeconds = 10;
                 config.IsDismissable = true;
                 config.Position = NotyfPosition.BottomRight;
             });
-            
+
 
             services.Configure<IdentityOptions>(options =>
             {
                 options.Password.RequireNonAlphanumeric = false;
             });
 
-            
+
 
         }
 

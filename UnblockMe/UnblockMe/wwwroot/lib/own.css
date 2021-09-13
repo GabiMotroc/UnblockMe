@@ -16,7 +16,6 @@
 }
 
 .flex-item {
-    background: tomato;
     padding: 5px;
     width: auto;
     min-width: 200px;
@@ -27,6 +26,7 @@
 }
 
 .button {
+    background: tomato;
     opacity: 1;
     transition: 0.3s;
     font-size: 3em;

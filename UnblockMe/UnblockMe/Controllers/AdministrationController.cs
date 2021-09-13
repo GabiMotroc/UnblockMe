@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using UnblockMe.Models;
 using UnblockMe.Services;
@@ -59,8 +60,6 @@ namespace UnblockMe.Controllers
                     ModelState.AddModelError("", error.Description);
                 }
             }
-
-
             return View(model);
         }
 
@@ -364,6 +363,26 @@ namespace UnblockMe.Controllers
             _notyfService.Success("User succesufully blocked");
 
             return View("AdminPanel");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> DownloadUserActivityAsync(string userName)
+        {
+            var builder = new StringBuilder();
+
+            builder.AppendLine($"UserName, IpAddress,ActivityTime, Url, Data");
+
+            var activities = await _userService.GetUserActivitiesByUserName(userName);
+
+            activities.Sort((x, y) => x.ActivityTime.CompareTo(y.ActivityTime));
+
+            foreach (var activity in activities)
+            {
+                builder.AppendLine($"{activity.UserName}, {activity.IpAddress}, {activity.ActivityTime}, {activity.Url}, {activity.Data}");
+            }
+
+            return File(Encoding.UTF8.GetBytes(builder.ToString()), "text/csv", "UserActivity.csv");
+
         }
 
         [HttpGet]
