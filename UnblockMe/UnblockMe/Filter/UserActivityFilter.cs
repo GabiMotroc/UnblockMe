@@ -29,15 +29,14 @@ namespace UnblockMe.Filter
 
             var url = $"{controllerName}/{actionName}";
 
-            if(!string.IsNullOrEmpty(context.HttpContext.Request.QueryString.Value))
+            if (!string.IsNullOrEmpty(context.HttpContext.Request.QueryString.Value))
             {
                 data = context.HttpContext.Request.QueryString.Value;
             }
             else
             {
-                var userData = context.ActionArguments.FirstOrDefault();
-
-                var stringUserData = JsonConvert.SerializeObject(userData);
+                KeyValuePair<string, object> userData = context.ActionArguments.FirstOrDefault();
+                var stringUserData = userData.Equals(default(KeyValuePair<string, object>)) ? "" : JsonConvert.SerializeObject(userData);
                 data = stringUserData;
             }
 
@@ -46,7 +45,7 @@ namespace UnblockMe.Filter
             var ipAddress = context.HttpContext.Connection.RemoteIpAddress.ToString();
 
             StoreUserActivity(data, url, userName, ipAddress);
-        }     
+        }
 
         public void StoreUserActivity(string data, string url, string userName, string ipAddress)
         {

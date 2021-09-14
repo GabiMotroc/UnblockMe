@@ -374,9 +374,7 @@ namespace UnblockMe.Controllers
 
             var activities = await _userService.GetUserActivitiesByUserName(userName);
 
-            activities.Sort((x, y) => x.ActivityTime.CompareTo(y.ActivityTime));
-
-            foreach (var activity in activities)
+            foreach (var activity in activities.OrderBy(a=>a.ActivityTime))
             {
                 builder.AppendLine($"{activity.UserName}, {activity.IpAddress}, {activity.ActivityTime}, {activity.Url}, {activity.Data}");
             }

@@ -90,7 +90,6 @@ namespace UnblockMe
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseRouting();
 
             app.UseAuthentication();
