@@ -1,0 +1,18 @@
+﻿@page
+@model UnblockMe.Areas.Identity.Pages.Account.Manage.AlreadyPremiumModel
+@{
+    ViewData["Title"] = "Already Premium";
+    ViewData["ActivePage"] = ManageNavPages.AlreadyPremium;
+}
+
+<h4>@ViewData["Title"]</h4>
+
+<p>You are a premium user, if you want to change that press the button below.</p>
+
+<p>
+    <a id="remove-upgrade" asp-page="RemovePremium" class="btn btn-primary">Remove Upgrade</a>
+</p>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

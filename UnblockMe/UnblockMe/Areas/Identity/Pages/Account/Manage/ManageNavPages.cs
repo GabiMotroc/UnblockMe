@@ -24,6 +24,12 @@ namespace UnblockMe.Areas.Identity.Pages.Account.Manage
 
         public static string TwoFactorAuthentication => "TwoFactorAuthentication";
 
+        // home baked
+        public static string Premium => "Premium";
+        public static string AlreadyPremium => "AlreadyPremium";
+        public static string RemovePremium => "RemovePremium";
+        public static string UpgradeToPremium => "UpgradeToPremium";
+
         public static string IndexNavClass(ViewContext viewContext) => PageNavClass(viewContext, Index);
 
         public static string EmailNavClass(ViewContext viewContext) => PageNavClass(viewContext, Email);
@@ -39,6 +45,12 @@ namespace UnblockMe.Areas.Identity.Pages.Account.Manage
         public static string PersonalDataNavClass(ViewContext viewContext) => PageNavClass(viewContext, PersonalData);
 
         public static string TwoFactorAuthenticationNavClass(ViewContext viewContext) => PageNavClass(viewContext, TwoFactorAuthentication);
+
+        // home baked
+        public static string PremiumClass(ViewContext viewContext) => PageNavClass(viewContext, Premium);
+        public static string AlreadyPremiumClass(ViewContext viewContext) => PageNavClass(viewContext, AlreadyPremium);
+        public static string RemovePremiumClass(ViewContext viewContact) => PageNavClass(viewContact, RemovePremium);
+        public static string UpgradeToPremiumClass(ViewContext viewContext) => PageNavClass(viewContext, UpgradeToPremium);
 
         private static string PageNavClass(ViewContext viewContext, string page)
         {
