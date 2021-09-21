@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using UnblockMe.Services;
 using System.Security.Claims;
 
+
 namespace UnblockMe.Controllers
 {
 
@@ -41,7 +42,6 @@ namespace UnblockMe.Controllers
             return cars;
         }
 
-
         public List<Car> GetFirstNCarsByPartialPlate(string licencePlate, int n)
         {
             var cars = _context.Car
@@ -59,7 +59,6 @@ namespace UnblockMe.Controllers
             return cars;
         }
 
-        
         public Car GetCarByPlate(string licencePlate)
         {
             var car = _context.Car
@@ -72,8 +71,6 @@ namespace UnblockMe.Controllers
                 .FirstOrDefaultAsync(a => a.LicencePlate.Equals(licencePlate));
             return car;
         }
-
-
         public List<Car> GetCarsOfAnOwner(string owner)
         {
             var cars = _context.Car
@@ -90,7 +87,6 @@ namespace UnblockMe.Controllers
                 .ToListAsync();
             return cars;
         }
-
 
         public void AddCarAndOwner(Car car, string v)
         {
@@ -147,7 +143,6 @@ namespace UnblockMe.Controllers
             catch (Exception) { }
             return car;
         }
-
 
         public void AddPhotoToCar(Car car, IFormFile image)
         {
@@ -217,8 +212,6 @@ namespace UnblockMe.Controllers
                 Console.WriteLine(e);
             }
         }
-
-
         public void AddCarWithPhoto(Car car, IFormFile image, string owner)
         {
             try
@@ -274,7 +267,6 @@ namespace UnblockMe.Controllers
             catch { }
         }
 
-
         public void UpdateCar(Car input)
         {
             _context.Car.Update(input);
@@ -285,7 +277,6 @@ namespace UnblockMe.Controllers
             _context.Car.Update(input);
             await _context.SaveChangesAsync();
         }
-
 
         public void UpdateCar(Car input, IFormFile image)
         {
@@ -319,7 +310,7 @@ namespace UnblockMe.Controllers
                 _context.CarPhoto.Update(carPhoto);
                 _context.SaveChanges();
             }
-            catch (Exception e) 
+            catch (Exception e)
             {
                 Console.WriteLine(e);
             }
@@ -381,6 +372,20 @@ namespace UnblockMe.Controllers
                 .FirstOrDefaultAsync();
             return car;
         }
+
+        public async Task AddInteractionAsync(string ownCar, string otherCar)
+        {
+            var interaction = new BlockingInteractions()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Stuck = otherCar,
+                BlockedBy = ownCar,
+                InteractionTime = DateTime.UtcNow
+            };
+
+            await _context.BlockingInteractions.AddAsync(interaction);
+            await _context.SaveChangesAsync();
+        }
     }
 
     public interface ICarService
@@ -422,5 +427,6 @@ namespace UnblockMe.Controllers
         Task UpdateCarAsync(Car input, IFormFile image);
         Task RemoveCarAsync(Car input);
         Task<Car> GetFirstCarOfOwnerAsync(string owner);
+        Task AddInteractionAsync(string ownCar, string otherCar);
     }
 }

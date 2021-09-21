@@ -223,12 +223,16 @@ namespace UnblockMe.Controllers
                         OtherCar.BockedBy = ownCar;
 
                         await _carService.UpdateCarAsync(OtherCar);
+
+                        await _carService.AddInteractionAsync(OwnCar.LicencePlate, otherCar);
+
                         _notyfService.Success("Car blocked with success.");
                     }
                     else
                     {
                         OwnCar.Blocks = otherCar;
                         await _carService.UpdateCarAsync(OwnCar);
+                        await _carService.AddInteractionAsync(OwnCar.LicencePlate, otherCar);
                         _notyfService.Warning("The selected car was not found but your status has been updated.");
                     }
                 }
@@ -284,10 +288,19 @@ namespace UnblockMe.Controllers
             return File(Encoding.UTF8.GetBytes(builder.ToString()), "text/csv", "CarList.csv");
         }
 
+        public IActionResult GetActivity()
+        {
+            return Json("test");
+        }
+        public ActionResult GoToConfirm(string name)
+        {
+            return Json(new { Name = name, DateTime = DateTime.Now.ToShortDateString() });
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-    }
+    } 
 }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -373,8 +374,7 @@ namespace UnblockMe.Controllers
             builder.AppendLine($"UserName, IpAddress,ActivityTime, Url, Data");
 
             var activities = await _userService.GetUserActivitiesByUserName(userName);
-
-            activities.Sort((x, y) => x.ActivityTime.CompareTo(y.ActivityTime) );
+            activities.Sort((x, y) => x.ActivityTime.CompareTo(y.ActivityTime));
 
             foreach (var activity in activities)
             {
@@ -382,7 +382,19 @@ namespace UnblockMe.Controllers
             }
 
             return File(Encoding.UTF8.GetBytes(builder.ToString()), "text/csv", "UserActivity.csv");
+        }
 
+        public async Task<IActionResult> DownloadListOfUsersAsync()
+        {
+            var builder = new StringBuilder();
+
+            var users = await _userManager.Users.ToListAsync();
+            foreach (var user in users)
+            {
+                builder.AppendLine($"{user.UserName}, ");
+            }
+
+            return File(Encoding.UTF8.GetBytes(builder.ToString()), "text/csv", "ListOfUsers.csv");
         }
 
         [HttpGet]

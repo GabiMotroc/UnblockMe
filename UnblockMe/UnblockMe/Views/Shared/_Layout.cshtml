@@ -58,11 +58,20 @@
                                 <a class="nav-link" asp-area="" asp-controller="Car" asp-action="ViewLicencePlate">View Plates</a>
                             </li>
 
+                            @if (SignInManager.IsSignedIn(User) && User.IsInRole("Premium"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Premium" asp-action="Map">
+                                        Premium
+                                    </a>
+                                </li>
+                            }
+
                             @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
                             {
                                 <li class="nav-item">
                                     <a class="nav-link" asp-controller="Administration" asp-action="AdminPanel">
-                                    Admin Panel
+                                        Admin Panel
                                     </a>
                                 </li>
                             }

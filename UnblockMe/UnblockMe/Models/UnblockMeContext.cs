@@ -34,6 +34,8 @@ namespace UnblockMe.Models
 
         public virtual DbSet<UserActivity> UserActivities { get; set; }
 
+        public virtual DbSet<BlockingInteractions> BlockingInteractions { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -195,6 +197,30 @@ namespace UnblockMe.Models
 
                 entity.Property(e => e.ActivityTime)
                     .HasColumnName("ActivityTime");
+
+            });
+
+            modelBuilder.Entity<BlockingInteractions>(entity =>
+            {
+                entity.HasKey(e => e.Id)
+                    .HasName("PK_BlockingInteractions");
+
+                entity.ToTable("BlockingInteractions");
+
+                entity.Property(e => e.Stuck)
+                    .HasColumnName("Stuck");
+
+                entity.Property(e => e.BlockedBy)
+                    .HasColumnName("BlockedBy");
+
+                entity.Property(e => e.InteractionTime)
+                    .HasColumnName("InteractionTime");
+
+                entity.Property(e => e.Latitude)
+                    .HasColumnName("Latitude");
+
+                entity.Property(e => e.Longitude)
+                    .HasColumnName("Longitude");
 
             });
 

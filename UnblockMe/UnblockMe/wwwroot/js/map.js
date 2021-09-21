@@ -2,7 +2,7 @@
     center: [46, 25],
     zoom: 7,
     maxZoom: 18,
-    minZoom: 7,
+    minZoom: 1,
     layers: [
         new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             'attribution': 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
@@ -61,12 +61,35 @@ info.onAdd = function (map) {
 // method that we will use to update the control based on feature properties passed
 info.update = function (props) {
     this._div.innerHTML = '<h4>Daily interactions</h4>' + (props ?
-        '<b>' + props.name + '</b><br />' + props.density + ' people / mi<sup>2</sup>'
+        '<b>' + props.name + '</b><br />' + props.density + ' interactions'
         : 'Hover over a state');
 };
 
-info.addTo(map); 
+info.addTo(map);
 
+fetch('/CarController/GetActivity', {
+    method: "POST",
+    body: JSON.stringify("test"),
+    headers: {
+    "Content-Type": "application/json"
+}
+            })
+    .then(response => response.json())
+    .then(data => console.log(data));
+
+async function callServer() {
+    var data = { 'name': 'Dharmendra' };
+    const res = await fetch("/CarController/GoToConfirm", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    });
+
+    const result = await res.json();
+    console.log('Name : ' + result.Name + '\nDate : ' + result.DateTime);
+};
 ////var info = L.control();
 ////function highlightFeature(e) {
 ////    var layer = e.target;

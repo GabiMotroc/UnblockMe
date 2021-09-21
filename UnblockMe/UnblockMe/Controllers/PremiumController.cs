@@ -10,10 +10,6 @@ namespace UnblockMe.Controllers
     [Authorize(Roles = "Admin, Premium")]
     public class PremiumController : Controller
     {
-        public IActionResult GetPremium()
-        {
-            return View();
-        }
         public IActionResult Map()
         {
             return View();

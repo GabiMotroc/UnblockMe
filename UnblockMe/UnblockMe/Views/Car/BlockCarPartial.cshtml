@@ -25,6 +25,24 @@
 
 </style>
 
+<script>
+    var latitude = document.getElementById('latitude').value;
+    var longitude = document.getElementById("longitude");
+
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+            
+        }
+    }
+
+    function savePosition(position) {
+        latitude.value = position.coordinates.latitude;
+        longitude.value = position.coordinates.longitude;
+    }
+</script>
+
 <div class="modal" id="BlockCarPartial" style="width:50% ">
 
     <div class="moda-dialog">
@@ -44,50 +62,51 @@
                 {
                     @using (Html.BeginForm("BlockCar", "Car", FormMethod.Get))
                     {
-                        <input type ="hidden" value="@Model.OwnCars.FirstOrDefault()" name="ownCar"/>
-                        <input type="hidden" value="@Model.OtherCar" name="otherCar"/>
-                        <input type="submit" class="btn btn-primary" value="Press to conform." />
+                        <input type="hidden" value="@Model.OwnCars.FirstOrDefault()" name="ownCar" />
+                        <input type="hidden" value="@Model.OtherCar" name="otherCar" />
+                        <input id ="latitude" type="hidden" value="none" name="latitude" />
+                        <input id="longitude" type="hidden" value="none" name="longitude" />
+                        <input type="submit" class="btn btn-primary" value="Press to conform." onclick="getLocation()" />
                     }
                 }
                 else
-                    @using(Html.BeginForm("BlockCar", "Car", FormMethod.Get))
-                {
-                <div>
-                    <div class="top-buffer">
-                        @if (Model.OwnCars.Count > 1)
-                        {
-                            <label for="SelectedOwnCar">Select own car</label>
-                            <select id="SelectOwnPlate" name="ownCar">
-                                @foreach (var item in Model.OwnCars)
+                    @using (Html.BeginForm("BlockCar", "Car", FormMethod.Get))
+                    {
+                        <div>
+                            <div class="top-buffer">
+                                @if (Model.OwnCars.Count > 1)
                                 {
-                                    <option value="@item">@item</option>
+                                    <label for="SelectedOwnCar">Select own car</label>
+                                    <select id="SelectOwnPlate" name="ownCar">
+                                        @foreach (var item in Model.OwnCars)
+                                        {
+                                            <option value="@item">@item</option>
+                                        }
+                                    </select>
                                 }
-                            </select>
-                        }
-                        else
-                        {
-                            <input type="hidden" id="SelectOtherCar" name="otherCar" value="@Model.OwnCars.First()" />
-                        }
-                    </div>
-                    <hr />
-                    <div class="top-buffer">
-                        @if (Model.OtherCar == null)
-                        {
-                            <p>Introduce the other car's licence plate:</p>
-                            <textarea id="SelectOtherCar" name="otherCar">@Model.OtherCar</textarea>
-                        }
-                        else
-                        {
-                            <input type="hidden" id="SelectOtherCar" name="otherCar" value="@Model.OtherCar" />
-                        }
-                    </div>
-                    <input type="submit" class="top-buffer btn-primary" value="Submit" />
-                </div>
-            }
+                                else
+                                {
+                                    <input type="hidden" id="SelectOtherCar" name="otherCar" value="@Model.OwnCars.First()" />
+                                }
+                            </div>
+                            <hr />
+                            <div class="top-buffer">
+                                @if (Model.OtherCar == null)
+                                {
+                                    <p>Introduce the other car's licence plate:</p>
+                                    <textarea id="SelectOtherCar" name="otherCar">@Model.OtherCar</textarea>
+                                }
+                                else
+                                {
+                                    <input type="hidden" id="SelectOtherCar" name="otherCar" value="@Model.OtherCar" />
+                                }
+                            </div>
+                            <input type="submit" class="top-buffer btn-primary" value="Submit" />
+                        </div>
+                    }
 
             </div>
 
         </div>
     </div>
 </div>
-    </div>
