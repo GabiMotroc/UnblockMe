@@ -1,10 +1,160 @@
-﻿@model List<UnblockMeContext> 
+﻿@model List<Car>
 
 @{
     ViewData["Title"] = "View Licence Plate";
 }
 
-@foreach(var test in Model)
-{ 
-    <body>@test.User.<br></body>
-}
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .btn{
+            
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th.buttons {
+            width: 0%;
+            padding: 0;
+        }
+
+        .ind-buttons {
+            color: blue;
+            font-size: 85%;
+            vertical-align: bottom;
+            text-align: left;
+        }
+
+        th.blocked, th.blocks, th.licence, td.blocked, td.blocks, td.licence {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+
+    <script>
+        function Function(c) { console.log(c); }
+
+         
+    </script>
+
+    @if (!(Model.Count == 0) && (!Model.Equals(null)))
+    {
+        <table>
+
+            <tr>
+                <th class="licence">Licence Plate</th>
+                <th class="blocked">Is blocked by</th>
+                <th class="blocks">Is blocking</th>
+                <th class="buttons"></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td class="licence">
+                        <button type="button" class="btn btn-link" data-toggle="ajax-modal" data-target="#Car"
+                                data-url="@Url.Action("ViewContact", "Car", new { text=item.LicencePlate })" data-id="@item.LicencePlate">
+                            @item.LicencePlate
+                        </button>
+                        @*@Html.ActionLink(
+         item.LicencePlate,                                                 // linkText
+         "ViewContact",                                                   // actionName
+         "Car",                                                      // controllerName
+         new
+         {                                                     // routeValues
+             text = item.LicencePlate
+         },
+        new
+        {
+            @style = "color: black"
+
+        }                                                // htmlAttributes
+         )*@
+                    </td>
+
+                    <td class="blocked">
+                        <button type="button" class="btn btn-link" data-toggle="ajax-modal" data-target="#Car"
+                                data-url="@Url.Action("ViewContact", "Car", new { text=item.BockedBy })" data-id="@item.LicencePlate">
+                            @item.BockedBy
+                        </button>
+                        @*@Html.ActionLink(
+             item.BockedBy ?? "",                                                 // linkText
+             "ViewContact",                                                   // actionName
+             "Car",                                                      // controllerName
+             new
+             {                                                     // routeValues
+                 text = item.BockedBy ?? ""
+             },
+             new
+             {
+                 @style = "color: black"
+
+             }                                                                      // htmlAttributes
+             )*@
+                    </td>
+                    <td class="blocks">
+                        <button type="button" class="btn btn-link" data-toggle="ajax-modal" data-target="#Car"
+                                data-url="@Url.Action("ViewContact", "Car", new { text=item.Blocks })" data-id="@item.LicencePlate">
+                            @item.Blocks
+                        </button>
+                        @*@Html.ActionLink(
+        item.Blocks ?? "",                                                 // linkText
+        "ViewContact",                                                   // actionName
+        "Car",                                                      // controllerName
+        new
+        {                                                     // routeValues
+            text = item.Blocks ?? ""
+        },
+        new
+        {
+            @style = "color: black"
+
+        }                                                                          // htmlAttributes
+        )*@
+                    </td>
+                    <td class="buttons">
+                        @*<div id="Edit" class="ind-buttons" onclick="Function('@item.LicencePlate')">Edit</div>*@
+                        <div id="PlaceHolderHere"></div>
+                        <button type="button" class="btn btn-link" data-toggle="ajax-modal" data-target="#Car"
+                data-url="@Url.Action("EditCar", "Car", new { text=item.LicencePlate })" data-id="@item.LicencePlate">
+            <i class="fa fa-edit"></i>
+        </button>
+                        @*@Html.ActionLink(
+                       "EditCar", 
+                       "EditCar", 
+                       "Car", 
+                       new { text = item.LicencePlate },
+                       new 
+                       { 
+                           @data_toggle = "ajax-modal", 
+                           @data_target = "#Car", 
+                           @id = "editActionLink"
+                       })*@
+
+                        @using (Html.BeginForm("RemoveCar", "Car", FormMethod.Post))
+                        {
+                            <input type="hidden" name="text" value="@item.LicencePlate">
+                            <button type="submit" class="btn btn-link">
+                                <i class="fa fa-trash" style="color:red" aria-hidden="true"></i>
+                            </button>
+                        }
+                    </td>
+                </tr>
+
+            }
+        </table>
+    }
+    else
+    {
+        <h5>None found.</h5>
+    }
+
+</body>

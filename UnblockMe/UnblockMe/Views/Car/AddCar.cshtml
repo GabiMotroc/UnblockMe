@@ -1,0 +1,85 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+@{
+    ViewData["Title"] = "Add Licence Plate";
+}
+
+@model UnblockMe.Models.Car
+
+@using (Html.BeginForm("AddCar", "Car", FormMethod.Post))
+{
+    <body style="align-content: center">
+        <style>
+            .box {
+                width: 100%;
+                float: left;
+                margin-right: 10px;
+                margin-top: -5px;
+                box-sizing: border-box;
+                align-content: center;
+            }
+
+            span.asterisk {
+                color: red;
+            }
+        </style>
+
+        <h3>Introduce the details of the car that you want to add.</h3>
+
+        <div class="box">
+            <label style=" float:left; margin-right:20px;">Licence Plate<span class="asterisk">*</span>:</label>
+            @Html.TextBoxFor(x => x.LicencePlate, new { @class = "box", @placeholder = "Licence Plate..."@*, @required = "required"*@ })
+
+            <label style=" float:left; margin-right:20px;">Maker: </label>
+            @Html.TextAreaFor(x => x.Maker, new { @class = "box", @placeholder = "Maker..." })
+
+            <label style=" float:left; margin-right:20px;">Model: </label>
+            @Html.TextAreaFor(x => x.Model, new { @class = "box", @placeholder = "Model..." })
+
+            <label style=" float:left; margin-right:20px;">Colour: </label>
+            @Html.TextAreaFor(x => x.Colour, new { @class = "box", @placeholder = "Colour..." })
+
+            <label style=" float:left; margin-right:20px;">Blocks: </label>
+            @Html.TextAreaFor(x => x.Blocks, new { @class = "box", @placeholder = "The licence plate of the car that you are blocking..." })
+
+            <label style=" float:left; margin-right:20px;">Blocked by: </label>
+            @Html.TextAreaFor(x => x.BockedBy, new { @class = "box", @placeholder = "The licence plate of the car that blocks you..." })
+
+            <input type="submit" value="Submit" style="width: 60%; background: limegreen; margin-top: 20px" />
+
+            <p style="margin-top: 20px">Every item with <span class="asterisk">*</span> is not optional.</p>
+        </div>
+    </body>
+}
+
+@*@functions
+    {
+        public bool checkPrime(int number)
+        {
+            if (number <= 1)
+                return false;
+            if (number == 2)
+                return true;
+            if (number % 2 == 0)
+                return false;
+            for (int i = 3; i < number / 2 + 1; i += 2)
+                if (number % i == 0)
+                    return false;
+            return true;
+        }
+    }
+    <h3>Acesta e un test.</h3>
+
+    @for(int i = 0; i < 100; i++)
+    {
+        if (checkPrime(i))
+        {
+            <b>@i<br></b>
+        }
+        else
+        {
+            <body>@i<br></body>
+        }
+    }*@

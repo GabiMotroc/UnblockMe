@@ -1,0 +1,26 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+@model Car
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    @if (SignInManager.IsSignedIn(User))
+    {
+        @using (Html.BeginForm("searchCar", "Car", FormMethod.Post))
+        {
+            @Html.TextBoxFor(x => Model.LicencePlate)
+            <input type="submit" name="text" value="Search">
+        }
+    }
+    else
+    {
+        <p style="padding-top: 20px">You need to be signed in to be able to use the website. Sorry for any inconvenience.</p>
+    }
+</div>

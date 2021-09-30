@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\motro\\Desktop\\New folder\\UnblockMe\\UnblockMe\\UnblockMe.csproj": {}
+    "F:\\Projects\\Git\\UnblockMe\\UnblockMe\\UnblockMe.csproj": {}
   },
   "projects": {
-    "C:\\Users\\motro\\Desktop\\New folder\\UnblockMe\\UnblockMe\\UnblockMe.csproj": {
+    "F:\\Projects\\Git\\UnblockMe\\UnblockMe\\UnblockMe.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\motro\\Desktop\\New folder\\UnblockMe\\UnblockMe\\UnblockMe.csproj",
+        "projectUniqueName": "F:\\Projects\\Git\\UnblockMe\\UnblockMe\\UnblockMe.csproj",
         "projectName": "UnblockMe",
-        "projectPath": "C:\\Users\\motro\\Desktop\\New folder\\UnblockMe\\UnblockMe\\UnblockMe.csproj",
-        "packagesPath": "C:\\Users\\motro\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\motro\\Desktop\\New folder\\UnblockMe\\UnblockMe\\obj\\",
+        "projectPath": "F:\\Projects\\Git\\UnblockMe\\UnblockMe\\UnblockMe.csproj",
+        "packagesPath": "C:\\Users\\abi\\.nuget\\packages\\",
+        "outputPath": "F:\\Projects\\Git\\UnblockMe\\UnblockMe\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\motro\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\abi\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -40,6 +40,10 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "dependencies": {
+            "AspNetCoreHero.ToastNotification": {
+              "target": "Package",
+              "version": "[1.1.0, )"
+            },
             "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": {
               "target": "Package",
               "version": "[3.1.15, )"
@@ -63,6 +67,10 @@
             "Microsoft.EntityFrameworkCore.Tools": {
               "target": "Package",
               "version": "[3.1.15, )"
+            },
+            "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
+              "target": "Package",
+              "version": "[3.1.5, )"
             }
           },
           "imports": [
@@ -83,7 +91,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.301\\RuntimeIdentifierGraph.json"
         }
       }
     }
